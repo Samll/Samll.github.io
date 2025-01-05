@@ -63,7 +63,9 @@
 </head>
 <body>
     <h1>¡Hola Gisela te traemos un regalo!</h1>
+    <div class="reyes">
     <img src="./reyesmagos.jpg" alt="Reyes Magos" class="reyes">
+    </div>
     <p>
     <button id="startButton">Abre tu regalo</button>
     </p>
@@ -81,6 +83,7 @@
         const message = document.getElementById('message');
 
         startButton.addEventListener('click', () => {
+            reyes.style.display = 'none';
             content.style.display = 'block';
             startButton.style.display = 'none';
         });
