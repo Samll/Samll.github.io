@@ -1,7 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regalo de Reyes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #a0522d;
+            margin-top: 20px;
+        }
+        .reyes {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+        .content {
+            display: none;
+            margin-top: 20px;
+        }
+        .editada {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+        #message {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #228b22;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            background-color: #d2691e;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #a0522d;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
 <body>
-<h1>Tote Web</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <h1>¡Regalo de Reyes!</h1>
+    <img src="reyesmagos.jpg" alt="Reyes Magos" class="reyes">
+
+    <button id="startButton">Abre tu regalo</button>
+
+    <div class="content">
+        <img src="gisela.jpg" alt="Imagen Editada" class="editada">
+        <p>¿Qué parte de la imagen está modificada?</p>
+        <input type="text" id="answer" placeholder="Escribe tu respuesta aquí">
+        <div id="message">Feliz Navidad, tus zapatillas te esperan.</div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const content = document.querySelector('.content');
+        const answerInput = document.getElementById('answer');
+        const message = document.getElementById('message');
+
+        startButton.addEventListener('click', () => {
+            content.style.display = 'block';
+            startButton.style.display = 'none';
+        });
+
+        answerInput.addEventListener('input', () => {
+            if (answerInput.value.toLowerCase() === 'zapatillas') {
+                message.style.display = 'block';
+            } else {
+                message.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
