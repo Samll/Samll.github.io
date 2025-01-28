@@ -1,105 +1,170 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalo de Reyes</title>
+    <title>Antonio Hernández Coarasa - CV Timeline</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
-        h1 {
-            color: #a0522d;
-            margin-top: 20px;
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .reyes {
-            max-width: 100%;
+        header img {
+            width: 150px;
             height: auto;
-            margin: 20px auto;
-            mix-blend-mode: multiply;
+            border-radius: 50%;
+            margin-bottom: 1rem;
         }
-        .reyesdiv {
-            display: block;
-            margin-top: 20px;
+        .contact {
+            margin-top: 1rem;
         }
-        .content {
-            display: none;
-            margin-top: 20px;
+        .timeline {
+            max-width: 800px;
+            margin: 2rem auto;
+            position: relative;
         }
-        .editada {
-            max-width: 100%;
-            height: 50vh;
-            margin: 20px auto;
-            mix-blend-mode: multiply;
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: #007acc;
         }
-        #message {
-            display: none;
-            font-size: 18px;
-            font-weight: bold;
-            color: #228b22;
-            margin-top: 20px;
+        .timeline-item {
+            margin: 2rem 0;
+            position: relative;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 20px;
-            background-color: #d2691e;
-            color: #fff;
-            border: none;
+        .timeline-item:nth-child(odd) {
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            text-align: left;
+        }
+        .timeline-item-content {
+            display: inline-block;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
             cursor: pointer;
-            border-radius: 5px;
         }
-        button:hover {
-            background-color: #a0522d;
+        .timeline-item-content img {
+            width: 50px;
+            height: auto;
+            margin-right: 0.5rem;
+            vertical-align: middle;
         }
-        input {
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .timeline-item-content.expanded {
+            background: #e0f7fa;
+        }
+        .timeline-item:nth-child(odd) .timeline-item-content {
+            margin-right: calc(50% + 12px);
+        }
+        .timeline-item:nth-child(even) .timeline-item-content {
+            margin-left: calc(50% + 12px);
+        }
+        .timeline-item-content h3 {
+            margin: 0;
+            color: #007acc;
+        }
+        .timeline-item-content time {
+            display: block;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #007acc;
+            color: white;
+            margin-top: 2rem;
+        }
+        .details {
+            display: none;
+            margin-top: 1rem;
+        }
+        .timeline-item-content.expanded .details {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <h1>¡Hola Gisela te traemos un regalo!</h1>
-    <div class="reyesdiv">
-    <img src=".\reyesmagos.jpg" alt="Reyes Magos" class="reyes">
-    </div>
-    <p>
-    <button id="startButton">Abre tu regalo</button>
-    </p>
-    <div class="content">
-        <img src=".\gisela.jpg" alt="Imagen Editada" class="editada">
-        <p>¿Qué parte de la imagen está modificada?</p>
-        <input type="text" id="answer" placeholder="Escribe tu respuesta aquí">
-        <div id="message">Feliz Navidad, tus zapatillas te esperan.</div>
-    </div>
+    <header>
+        <img id="profile-pic" src="" alt="Profile Picture">
+        <h1>Antonio Hernández Coarasa</h1>
+        <div class="contact" id="contact-info"></div>
+    </header>
+    <main>
+        <div class="timeline" id="timeline"></div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Antonio Hernández Coarasa. Todos los derechos reservados.</p>
+    </footer>
 
     <script>
-        const startButton = document.getElementById('startButton');
-        const content = document.querySelector('.content');
-        const reyesdiv = document.querySelector('.reyesdiv');
-        const answerInput = document.getElementById('answer');
-        const message = document.getElementById('message');
+        async function loadCV() {
+            const response = await fetch('cv.json');
+            const data = await response.json();
 
-        startButton.addEventListener('click', () => {
-            reyesdiv.style.display = 'none';
-            content.style.display = 'block';
-            startButton.style.display = 'none';
-        });
+            document.getElementById('profile-pic').src = data.profilePicture;
+            const contactInfo = document.getElementById('contact-info');
+            contactInfo.innerHTML = `<p>${data.contact}</p>`;
 
-        answerInput.addEventListener('input', () => {
-            if (answerInput.value.toLowerCase() === 'zapatillas') {
-                message.style.display = 'block';
-            } else {
-                message.style.display = 'none';
-            }
-        });
+            const timeline = document.getElementById('timeline');
+
+            data.timeline.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+
+                const content = document.createElement('div');
+                content.className = 'timeline-item-content';
+
+                const title = document.createElement('h3');
+                title.textContent = `${item.position} (${item.startYear} - ${item.endYear || 'Current'}) @ ${item.company}`;
+
+                const logo = document.createElement('img');
+                logo.src = item.logo;
+                logo.alt = `${item.company} logo`;
+
+                const time = document.createElement('time');
+                time.textContent = `${item.startYear} - ${item.endYear || 'Current'}`;
+
+                const details = document.createElement('div');
+                details.className = 'details';
+                details.innerHTML = `<ul>${item.tasks.map(task => `<li>${task}</li>`).join('')}</ul>`;
+
+                content.appendChild(logo);
+                content.appendChild(title);
+                content.appendChild(time);
+                content.appendChild(details);
+
+                content.addEventListener('click', () => {
+                    content.classList.toggle('expanded');
+                });
+
+                timelineItem.appendChild(content);
+                timeline.appendChild(timelineItem);
+            });
+        }
+
+        loadCV();
     </script>
 </body>
 </html>
+
