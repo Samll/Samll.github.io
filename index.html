@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antonio Hernández Coarasa - CV Timeline</title>
+    <title>CV Timeline</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,26 +14,52 @@
             color: #333;
         }
         header {
-            background-color: #007acc;
+            background-color: #0262a1;
             color: white;
-            padding: 1rem;
-            text-align: center;
+            padding: 0rem .5rem 0rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
         header img {
-            width: 150px;
-            height: auto;
-            border-radius: 50%;
-            margin-bottom: 1rem;
+            width: 100px;
+            height: 100px;
+            border-radius: 15%;
+            padding: 0rem .5rem 0rem;
         }
-        .contact {
-            margin-top: 1rem;
+        .logosPlace{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0rem .5rem 0rem;
+            width: 100%;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            padding: 0rem;
+        }
+        .header-title h1{
+            margin: 0;
+            text-align: center;
+        }
+        .honours-list {
+            align-items: center; 
+            justify-content: space-between; 
+            text-align: center;
+            padding: 0;
+        }
+        .qr-code {
+            width: 100px;
+            height: 100px;
+            padding: 0rem .5rem 0rem;
         }
         .timeline {
-            max-width: 800px;
-            margin: 2rem auto;
+            max-width: 95%;
+            margin: 0rem auto;
             position: relative;
         }
         .timeline:before {
@@ -41,43 +68,97 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 4px;
+            width: 6px;
             height: 100%;
-            background: #007acc;
+            background: #0262a1;
+        }
+        .timeline-section {
+            margin-bottom: 3rem;
+        }
+        .timeline-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #0262a1;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
         }
         .timeline-item {
-            margin: 2rem 0;
+            display: flex;     
+            align-items: center; 
+            justify-content: space-between; 
+            margin: 2rem 0rem;
             position: relative;
         }
-        .timeline-item:nth-child(odd) {
+        .timeline-item:nth-child(odd) .timeline-item-content{
             text-align: right;
         }
-        .timeline-item:nth-child(even) {
+        .timeline-item:nth-child(even) .timeline-item-content{
             text-align: left;
+        }
+        .timeline-logo-container {
+            position: absolute;
+            left: 50%;
+            background: white;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            border: 3px solid #0272bd; 
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+        }
+        .timeline-logo-container img {
+            width: 80%;
+            height: auto;
+            cursor: pointer;
+            mix-blend-mode: multiply;
         }
         .timeline-item-content {
             display: inline-block;
-            background: white;
             padding: 1rem;
+            background: white;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             position: relative;
+            width: 45%;
             cursor: pointer;
         }
-        .timeline-item-content img {
-            width: 50px;
-            height: auto;
-            margin-right: 0.5rem;
-            vertical-align: middle;
+        .timeline-item-content.active {
+            display: inline-block;
+            padding: 1rem;
+            background: #0272bd;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 45%;
+            cursor: pointer;
+        }
+
+        .timeline-item-content ul {
+            padding-left: 20px; /* Ensures proper indentation */
+            text-align: left; /* Aligns text normally */
+            list-style-position: inside; /* Keeps bullet points closer */
         }
         .timeline-item-content.expanded {
             background: #e0f7fa;
         }
+        .timeline-item-content.active.expanded {
+            background: #0272bd;/* #0293f3; */
+            color: #fff;
+        }
         .timeline-item:nth-child(odd) .timeline-item-content {
-            margin-right: calc(50% + 12px);
+            margin-right: calc(50% + 60px);
         }
         .timeline-item:nth-child(even) .timeline-item-content {
-            margin-left: calc(50% + 12px);
+            margin-left: calc(50% + 60px);
+        }
+        .timeline-item-content.active h3 {
+            margin: 0;
+            color: #e0f7fa;
         }
         .timeline-item-content h3 {
             margin: 0;
@@ -88,83 +169,350 @@
             font-size: 0.9rem;
             color: #666;
         }
+        .timeline-item-content.active time {
+            display: block;
+            font-size: 0.9rem;
+            color: #d8d7d7;
+        }
         footer {
             text-align: center;
             padding: 1rem;
-            background: #007acc;
+            background: #0262a1;
             color: white;
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
         .details {
             display: none;
-            margin-top: 1rem;
+            margin-top: 01rem;
+        }
+        .details h4{
+            text-decoration: underline;
+            margin-top: 0px;
+            text-align: left; /* Aligns text normally */;
         }
         .timeline-item-content.expanded .details {
             display: block;
         }
+        #about-me-content {
+            display: block;
+            width: 90%;
+            margin: 0 auto; 
+            margin-top: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        } 
+        .language-selector {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;  
+            justify-content: center;
+            padding: 0rem; 
+        } 
+
+        .flag { 
+            width: 50px;
+            height: 30px;
+            padding: .2rem;
+            background-size: cover;
+            cursor: pointer;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <header>
         <img id="profile-pic" src="" alt="Profile Picture">
-        <h1>Antonio Hernández Coarasa</h1>
-        <div class="contact" id="contact-info"></div>
+        <div class="header-title">
+            <h1 id="header-title-h1">CV</h1>
+            <div class="logosPlace">
+                <a id="link_linkedin" href="" target="_blank">
+                    <i class="fa-brands fa-linkedin fa-2x" style="color: white; padding: 10px"></i>
+                </a>
+                <a id="link_email" href="">
+                    <i class="fa-solid fa-envelope fa-2x" style="color: white; padding: 10px"></i>
+                </a>
+                <a id="link_phone" href="">
+                    <i class="fa-solid fa-phone fa-2x" style="color: white; padding: 10px"></i>
+                </a>    
+                <a id="link_whatsapp" href="" target="_blank">
+                    <i class="fa-brands fa-whatsapp fa-2x" style="color: white; padding: 10px"></i>
+                </a>
+            </div>
+        </div>
+        <div class="language-selector">    
+            <div></div>
+            <table>
+                <tr>
+                    <td><img class="flag" onclick="loadCV('english')" src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English flag"></td>
+                </tr>
+                <tr>
+                    <td><img class="flag" onclick="loadCV('spanish')" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="Spanish flag"></td> 
+            </table> 
+        </div>
     </header>
     <main>
-        <div class="timeline" id="timeline"></div>
+        <section id="about-me">
+            <h2 class="timeline-title" onclick="toggleAboutMe()">About Me</h2>
+            <div id="about-me-content"></div>
+        </section>
+        <section id="work-experience">
+            <h2 class="timeline-title" onclick="toggleWorkExperienceTimeline()">Work Experience</h2>
+            <div class="timeline" id="timeline-work"></div>
+        </section>
+        <section id="education">
+            <h2 class="timeline-title" onclick="toggleAcademicalExperienceTimeline()">Academical Experience</h2>
+            <div class="timeline" id="timeline-education"></div>
+        </section>
+        <section id="honours">
+            <h2 class="timeline-title">Honours and Awards</h2>
+            <ul id="honours-list"></ul>
+        </section>
     </main>
     <footer>
-        <p>&copy; 2025 Antonio Hernández Coarasa. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Antonio Hernández Coarasa</p>
     </footer>
 
     <script>
-        async function loadCV() {
-            const response = await fetch('cv.json');
+        let currentLanguage = 'english';
+
+        const monthNames = {
+            english: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            spanish: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        };
+
+        async function loadCV(language) {
+            const response = await fetch(`cv_data_${language}.json`);
             const data = await response.json();
 
-            document.getElementById('profile-pic').src = data.profilePicture;
-            const contactInfo = document.getElementById('contact-info');
-            contactInfo.innerHTML = `<p>${data.contact}</p>`;
+            document.getElementById('profile-pic').src = data.basics.image;
+            document.getElementById('header-title-h1').innerText = data.basics.name + " CV";
+            document.getElementById('link_linkedin').href = data.basics.profiles.find(profile => profile.network === 'LinkedIn').url;
+            document.getElementById('link_email').href = `mailto:${data.basics.email}`;
+            document.getElementById('link_phone').href = `tel:${data.basics.phone}`; 
+            document.getElementById('link_whatsapp').href = `https://wa.me/${data.basics.phone}`; 
 
-            const timeline = document.getElementById('timeline');
+            document.getElementById('about-me-content').innerHTML = `<p>${data.aboutMe}</p>`;
 
-            data.timeline.forEach((item, index) => {
+            const workTimeline = document.getElementById('timeline-work');
+            workTimeline.innerHTML = '';
+
+            data.workExperience.forEach((item, index) => {
                 const timelineItem = document.createElement('div');
                 timelineItem.className = 'timeline-item';
+
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'timeline-logo-container';
+
+                const logo = document.createElement('img');
+                logo.src = item.logo;
+                logo.alt = `${item.company} logo`;
+                logoContainer.appendChild(logo);
 
                 const content = document.createElement('div');
                 content.className = 'timeline-item-content';
 
                 const title = document.createElement('h3');
-                title.textContent = `${item.position} (${item.startYear} - ${item.endYear || 'Current'}) @ ${item.company}`;
+                const startDate = new Date(item.startDate);
+                const endDate = item.endDate ? new Date(item.endDate) : null;
+                const formattedStartDate = `${monthNames[language][startDate.getMonth()]} ${startDate.getFullYear()}`;
+                const formattedEndDate = endDate ? `${monthNames[language][endDate.getMonth()]} ${endDate.getFullYear()}` : 'Current';
 
-                const logo = document.createElement('img');
-                logo.src = item.logo;
-                logo.alt = `${item.company} logo`;
-
+                title.textContent = `${item.position} @ ${item.company}`;
+ 
                 const time = document.createElement('time');
-                time.textContent = `${item.startYear} - ${item.endYear || 'Current'}`;
+                time.textContent = `${formattedStartDate} - ${formattedEndDate}`; 
+
 
                 const details = document.createElement('div');
                 details.className = 'details';
-                details.innerHTML = `<ul>${item.tasks.map(task => `<li>${task}</li>`).join('')}</ul>`;
 
-                content.appendChild(logo);
+                // Tasks Title
+                const tasksTitle = document.createElement('h4');
+                tasksTitle.textContent = "Tasks:";
+                details.appendChild(tasksTitle);
+
+                // Job Description List
+                const taskList = document.createElement('ul');
+                taskList.innerHTML = item.tasks.map(task => `<li>${task}</li>`).join('');
+                details.appendChild(taskList); 
+
+                // Projects Section
+                if (item.projects && item.projects.length > 0) {
+                    const projectContainer = document.createElement('div');
+                    projectContainer.className = 'projects-container';
+
+                    const projectTitle = document.createElement('h4');
+                    projectTitle.textContent = "Projects:"; 
+                    projectTitle.style.textDecoration = "underline";
+                    projectContainer.appendChild(projectTitle);
+
+                    const projectList = document.createElement('ul'); 
+
+                    item.projects.forEach(project => {
+                        const projectItem = document.createElement('li');
+                        projectItem.innerHTML = `<strong>${project.title}:</strong> ${project.description}`;
+                        projectList.appendChild(projectItem);
+                    });
+
+                    projectContainer.appendChild(projectList);
+                    details.appendChild(projectContainer);
+                }
+
+                // Add skills at the end of the description, if available
+                if (item.skills && item.skills.length > 0) {
+                    const skillsParagraph = document.createElement('p');
+                    skillsParagraph.style.fontStyle = 'italic'; // Optional: Italic styling
+                    skillsParagraph.textContent = `Skills: ${item.skills.join(' // ')}`;
+                    details.appendChild(skillsParagraph);
+                }
+ 
                 content.appendChild(title);
                 content.appendChild(time);
                 content.appendChild(details);
 
-                content.addEventListener('click', () => {
+                if (index % 2 === 0) {
+                    timelineItem.appendChild(content);
+                    timelineItem.appendChild(logoContainer);
+                } else {
+                    timelineItem.appendChild(logoContainer);
+                    timelineItem.appendChild(content);
+                } 
+
+                timelineItem.addEventListener('click', () => {
                     content.classList.toggle('expanded');
                 });
+                if (endDate == null){
+                    content.classList.add('active');
 
-                timelineItem.appendChild(content);
-                timeline.appendChild(timelineItem);
+                }
+                workTimeline.appendChild(timelineItem);
+            });
+
+            const educationTimeline = document.getElementById('timeline-education');
+            educationTimeline.innerHTML = '';
+
+            data.education.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'timeline-logo-container';
+
+                const logo = document.createElement('img');
+                logo.src = item.logo;
+                logo.alt = `${item.company} logo`;
+                logoContainer.appendChild(logo);
+
+                const content = document.createElement('div');
+                content.className = 'timeline-item-content';
+
+                const title = document.createElement('h3');
+                const startDate = new Date(item.startDate);
+                const endDate = item.endDate ? new Date(item.endDate) : null;
+                const formattedStartDate = `${monthNames[language][startDate.getMonth()]} ${startDate.getFullYear()}`;
+                const formattedEndDate = endDate ? `${monthNames[language][endDate.getMonth()]} ${endDate.getFullYear()}` : 'Current';
+
+                title.textContent = `${item.degree} @ ${item.institution}`;
+ 
+                const time = document.createElement('time');
+                time.textContent = `${formattedStartDate} - ${formattedEndDate}`;
+
+                const details = document.createElement('div');
+                details.className = 'details';
+                
+                // Tasks Title
+                const tasksTitle = document.createElement('h4');
+                tasksTitle.textContent = "Subjects:";
+                details.appendChild(tasksTitle);
+ 
+                const subjectsList = document.createElement('ul');
+                subjectsList.innerHTML = item.subjects.map(subject => `<li>${subject}</li>`).join('');
+                details.appendChild(subjectsList);  
+
+                // Projects Section 
+                if (item.project) { 
+                    const projectContainer = document.createElement('div');
+                    projectContainer.className = 'projects-container';
+
+                    const projectTitle = document.createElement('h4');
+                    projectTitle.textContent = "Project:"; 
+                    projectTitle.style.textDecoration = "underline";
+                    projectContainer.appendChild(projectTitle);
+
+                    const projectItem = document.createElement('li');
+                    projectItem.innerHTML = `<strong>${item.project.title}:</strong> ${item.project.description}`; 
+
+
+                    if (item.project.link) {
+                        projectItem.innerHTML = `<strong><a href="${item.project.link}" target="_blank" style="text-decoration: none; color: #0272bd;">
+                                        ${item.project.title}</a>:</strong> ${item.project.description}`;
+                    } else {
+                        projectItem.innerHTML = `<strong>${item.project.title}:</strong> ${item.project.description}`;
+                    }  
+
+                    projectContainer.appendChild(projectItem);
+                    details.appendChild(projectContainer);
+                }
+ 
+                content.appendChild(title);
+                content.appendChild(time);
+                content.appendChild(details);
+
+                if (index % 2 === 0) {
+                    timelineItem.appendChild(content);
+                    timelineItem.appendChild(logoContainer);
+                } else {
+                    timelineItem.appendChild(logoContainer);
+                    timelineItem.appendChild(content);
+                } 
+
+                timelineItem.addEventListener('click', () => {
+                    content.classList.toggle('expanded');
+                });
+                educationTimeline.appendChild(timelineItem);
+            });
+
+            const honoursList = document.getElementById('honours-list');
+            honoursList.innerHTML = '';
+
+            data.honoursAndAwards.forEach((award) => {
+                const li = document.createElement('li');
+                // If a link exists, wrap the title in an anchor tag
+                if (award.link) {
+                    li.innerHTML = `<strong><a href="${award.link}" target="_blank" style="text-decoration: none; color: #0272bd;">
+                                    ${award.title} (${award.year})</a>:</strong> ${award.details}`;
+                } else {
+                    li.innerHTML = `<strong>${award.title} (${award.year}):</strong> ${award.details}`;
+                }                
+                honoursList.appendChild(li);
             });
         }
 
-        loadCV();
+        function toggleAboutMe() {
+            const aboutMeContent = document.getElementById('about-me-content');
+            aboutMeContent.style.display = aboutMeContent.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleWorkExperienceTimeline() {
+            const WorkExperienceContent = document.getElementById('timeline-work');
+            WorkExperienceContent.style.display = WorkExperienceContent.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleAcademicalExperienceTimeline() {
+            const AcademicalExperienceContent = document.getElementById('timeline-education');
+            AcademicalExperienceContent.style.display = AcademicalExperienceContent.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'english' ? 'spanish' : 'english'; 
+            loadCV(currentLanguage);
+        }
+
+        // Initial load
+        loadCV(currentLanguage);
     </script>
 </body>
 </html>
-

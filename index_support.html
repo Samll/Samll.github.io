@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antonio Hernández Coarasa - CV Timeline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .qr-code {
+            width: 100px;
+            height: 100px;
+        }
+        .timeline {
+            max-width: 90%;
+            margin: 2rem auto;
+            position: relative;
+        }
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: #007acc;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            margin: 2rem 0;
+        }
+        .timeline-item:nth-child(odd) .timeline-item-content {
+            text-align: right;
+            order: 1;
+        }
+        .timeline-item:nth-child(even) .timeline-item-content {
+            text-align: left;
+            order: 2;
+        }
+        .timeline-logo-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-logo-container img {
+            width: 70%;
+            height: auto;
+            border-radius: 50%;
+        }
+        .timeline-item-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            cursor: pointer;
+        }
+        .timeline-item-content h3 {
+            margin: 0;
+            color: #007acc;
+        }
+        .timeline-item-content time {
+            display: block;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .details {
+            display: none;
+            margin-top: 1rem;
+        }
+        .timeline-item-content.expanded .details {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="profile-pic" src="./ahercoa.jpg" alt="Profile Picture">
+        <div class="header-title">
+            <h1>Antonio Hernández Coarasa</h1>
+        </div>
+        <img id="qr-code" class="qr-code" src="" alt="QR Code">
+    </header>
+    <main>
+        <section id="work-experience">
+            <h2 class="timeline-title">My Career Until Now</h2>
+            <div class="timeline" id="timeline-work"></div>
+        </section>
+    </main>
+    <script>
+        async function loadCV() {
+            const response = await fetch('cv_data_english.json');
+            const data = await response.json();
+            const workTimeline = document.getElementById('timeline-work');
+            workTimeline.innerHTML = '';
+
+            data.workExperience.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'timeline-logo-container';
+
+                const logo = document.createElement('img');
+                logo.src = item.logo;
+                logo.alt = `${item.company} logo`;
+                logoContainer.appendChild(logo);
+
+                const content = document.createElement('div');
+                content.className = 'timeline-item-content';
+
+                const title = document.createElement('h3');
+                title.textContent = `${item.position} (${item.startYear} - ${item.endYear || 'Current'}) @ ${item.company}`;
+
+                const details = document.createElement('div');
+                details.className = 'details';
+                details.innerHTML = `<ul>${item.tasks.map(task => `<li>${task}</li>`).join('')}</ul>`;
+
+                content.appendChild(title);
+                content.appendChild(details);
+                content.addEventListener('click', () => {
+                    content.classList.toggle('expanded');
+                });
+
+                if (index % 2 === 0) {
+                    timelineItem.appendChild(content);
+                    timelineItem.appendChild(logoContainer);
+                } else {
+                    timelineItem.appendChild(logoContainer);
+                    timelineItem.appendChild(content);
+                }
+
+                workTimeline.appendChild(timelineItem);
+            });
+        }
+
+        loadCV();
+    </script>
+</body>
+</html>
+
+
+
+data.education.forEach((item) => {
+    const timelineItem = document.createElement('div');
+    timelineItem.className = 'timeline-item';
+
+    const content = document.createElement('div');
+    content.className = 'timeline-item-content';
+
+    const startDate = new Date(item.startDate);
+    const endDate = new Date(item.endDate);
+    const formattedStartDate = `${monthNames[language][startDate.getMonth()]} ${startDate.getFullYear()}`;
+    const formattedEndDate = `${monthNames[language][endDate.getMonth()]} ${endDate.getFullYear()}`;
+
+    const title = document.createElement('h3');
+    title.textContent = `${item.degree} @ ${item.institution}`;
+
+    const time = document.createElement('time');
+    time.textContent = `${formattedStartDate} - ${formattedEndDate}`;
+
+    content.appendChild(title);
+    content.appendChild(time);
+
+    timelineItem.appendChild(content);
+    educationTimeline.appendChild(timelineItem);
+});
+
+
+
+
+
+
+

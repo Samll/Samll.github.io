@@ -1,0 +1,293 @@
+{
+    "basics": {
+      "name": "Antonio Hernández Coarasa",
+      "label": "Engineering Manager - CTO",
+      "image": "./ahercoa.jpg",
+      "email": "ahercoa@gmail.com",
+      "phone": "+34699625413",
+      "url": "https://samll.github.io/",
+      "summary": "Antonio Hernández Coarasa Summary",
+      "location": { 
+        "postalCode": "08028",
+        "city": "Barcelona",
+        "countryCode": "ES"
+      },
+      "profiles": [{
+        "network": "LinkedIn",
+        "username": "Antonio Hernández Coarasa",
+        "url": "https://www.linkedin.com/in/ahercoa/"
+      }]
+    }, 
+    "qrCode": "path/to/qr_code.png",
+    "aboutMe": "Dynamic Technology Leader with over 10 years of experience managing international cross-functional teams and driving strategic projects in the IT, Automotive, and sustainable AgTech industries. Expertise in spearheading Digital Transformation, enhancing Enterprise Systems, and delivering Innovative solutions.",
+    "workExperience": [
+        {
+            "position": "IT Manager",
+            "startDate": "1/1/2023",
+            "endYear": null,
+            "company": "CBC Iberia - Biogard Division",
+            "logo": "./cbc_logo.png",
+            "tasks": [
+                "Position executed in parallel with Agro Electronics Business Unit Manager, reporting to CEO",
+                "Manage and execute +10 ITOps (Python + JS for API integration) with IT specialist team",
+                "Spearheaded the successful integration of ERP, Online Marketplace and Logistics post-M&A, ensuring seamless ERP data consolidation in 6 months",
+                "Managed a multidisciplinary team of IT specialists (1 internal, 10 external), enhancing system performance and operational efficiency across the organization",
+                "Automated IT operations integrating M365 AzureID for Data and Security monitoring",
+                "Led the deployment and continuous improvement of IT infrastructure, ensuring robust cybersecurity measures with reduction on Cybersecurity alerts up to 50%"
+            ],
+            "projects": [
+                {
+                    "title": "GWorkspace to M365",
+                    "description": "Transition from GWorkspace to M365, including Azure AD integration for Data and Security monitoring"
+                },
+                {
+                    "title": "Business Central and Power BI",
+                    "description": "Integration of Business Central and Power BI for real-time data analytics and reporting"
+                }
+            ],
+            "skills": [
+                "CTO - Tech Management",
+                "Enterprise Resource Planning (ERP)",
+                "Information Technology Infrastructure",
+                "IT Management",
+                "Microsoft Power BI",
+                "Process Standarization",
+                "Security Management"
+            ]
+        },
+        {
+            "position": "Agro Electronics Business Unit Manager",
+            "startDate": "6/21/2021",
+            "endDate": null,
+            "company": "CBC Iberia - Biogard Division",
+            "logo": "./agro_electronics_logo.png",
+            "tasks": [
+                "Reporting to CEO and member of Innovation Comitee in European team (including PMO lead)",
+                "Directed the development of innovative AgTech solutions, integrating webGIS, IoT, AI, and cloud services to enhance product offerings.",
+                "From Market Research and Business Plan development to Portfolio preparation for 4 different product lines, 3 of them currently in market",
+                "Managed cross-functional teams of over 30 professionals across Europe, driving projects that aligned with company strategy and market needs",
+                "Oversaw the successful launch of IoT-based pest control systems, reducing pesticide usage by 80% and reducing cost to customer circa 50% by providing pheromone optimized application by integrating geospatial IOT data"
+            ],
+            "projects": [
+                {
+                    "title": "CDTI Mister 4.0",
+                    "description": "Integration of Electronic Traps and Weather Station (IoT with AWS IOT Core) with Mating Disruption Aerosols for Lobesia botrana pest control on vineyards (European Fund Granted through CDTI)"
+                },
+                {
+                    "title": "CDTI Pentrap",
+                    "description": "Multispecies Pentatomidae Biotremology Pest Control System (European Fund Granted through CDTI)"
+                },
+                {
+                    "title": "SIGIS",
+                    "description": "Adaptation of Lobesia botrana models to La Rioja Spanish region to optimize pheromone dispensing systems"
+                },
+                {
+                    "title": "BiogardGIS Web Platform",
+                    "description": "Continuous management of BiogardGIS, website for remote control of IoT devices and Data Analytics on different crop pest pressure"
+                },
+                {
+                    "title": "Biogard Bucket Trap System",
+                    "description": "Spearheaded the development of IoT based Pest Trap from Concept to Industrialization"
+                }
+            ],
+            "skills": [
+                "AgTech Solutions",
+                "Business Development",
+                "Business Plan Development",
+                "Cross-Functional Team Leadership",
+                "Innovation Management",
+                "Market Research",
+                "Marketing Strategy",
+                "Product Management",
+                "Project Management",
+                "Reporting & Analysis"
+            ]
+        },
+        {
+            "position": "MHE Engineering Project Manager",
+            "startDate": "7/12/2020",
+            "endDate": "6/21/2021",
+            "company": "Amazon",
+            "logo": "amazon_logo.png",
+            "tasks": [
+                "End-to-end ownership for large-scale engineering projects with CAPEX monitoring",
+                "Lead Critical Path, Dive Deep on technical details and provide innovative solutions",
+                "Deliverable tracking through weekly meetings with internal team and external vendors",
+                "Lead Design Reviews and Solution Design to meet business needs and global design standards",
+                "Work very closely with Construction, IT and Operation from project start to project go live",
+                "SME for Receive line Label machinery and with IOT management and predictive maintenance"
+            ],
+            "projects": [
+                {
+                    "title": "MAD9 - Alcalá de Henares - Execution Phase",
+                    "description": "Conveyors and High Rack Deployment Management for New Amazon Fulfillment Center in Spain"
+                },
+                {
+                    "title": "BHX2 - Birmingham - Design Phase",
+                    "description": "Design for a brown field refactoring to increase cube capacity and improve operational efficiency. Includes engineering and financial feasibility plan"
+                },
+                {
+                    "title": "BCN3 - Barcelona - Execution Phase",
+                    "description": "AMXL conversion project from Pantry. Deployment of High Racks on active Brownfield"
+                }
+            ],
+            "skills": [
+                "Technical Direction",
+                "Business Development",
+                "Business Plan Development",
+                "Cross-Functional Team Leadership", 
+                "Project Management",
+                "Reporting & Analysis"
+            ]
+        },
+        {
+            "position": "Automotive Senior Project Manager",
+            "startDate": "11/3/2014",
+            "endDate": "7/12/2020",
+            "company": "Ficosa",
+            "logo": "ficosa_logo.png",
+            "tasks": [
+                "Career evolution from SW Developer (2014-2016) to SW Leader (2016-2017) and Project Manager (2017-2020) reporting to Engineering Manager.",
+                "Lead engineering development teams for product development for different international customers (Nissan, Harley Davidson, Renault) managing teams up to 80 engineers among Dev (Software, Hardware, Mechanical and Radio Frequency), QA and Production",
+                "Project Management both in Waterfall and Agile(Scrum). Including SW, HW, Mech, Validation/QA and Design for Manufacturing",
+                "Direct interface with multiple Stakeholders both Internal (Director Comitee, R&D team and Production team) and External (Suppliers and Final Customer -Renault,Nissan,Harley Davidson)",
+                "Managed Projects End to End from RFP to Delivery, Change Requests and Contingency plans",
+                "Define and lead mitigation and contingency action plans",
+                "Project portfolio for Telematic Control Units (TCUs) eCall system and V2X, including integration with Infotainment",
+                "Managed (and executed as Developer) complete V-Spice model for requirements to test traceability execution"
+            ],
+            "projects": [
+                {
+                    "title": "Harley Davidson - Livewire - 2020/2021",
+                    "description": "Lead the development of the Telematic Control Unid for the first electric motorcycle for Harley Davidson" 
+                },
+                {
+                    "title": "Nissan Gen2 and KAI Platforms",
+                    "description": "Lead the development of the Telematic Control Unit for the new Nissan Gen2 and KAI platforms"
+                },
+                {
+                    "title": "Renault SL8 Refactor",
+                    "description": "Lead the refactor and recertification of SL8 for Russian Market"
+                }
+            ],
+            "skills": [
+                "Technical Direction",
+                "Embedded Electronics Engineering",
+                "Project Management",
+                "Problem Solving",
+                "Technical Requirements",
+                "Quality Control",
+                "Cross-team Collaboration",
+                "Requirements Gathering",
+                "Software Development Lifecycle (SDLC)",
+                "Waterfall and Scrum Methodologies",
+                "Jira / Confluence"
+            ]
+        },
+        {
+            "position": "Automotive Safety Firmware Engineer",
+            "startDate": "9/9/2012",
+            "endDate": "11/3/2014",
+            "company": "Lear Corporation",
+            "logo": "lear_logo.png",
+            "tasks": [
+                "Developed embedded systems for automotive applications under ISO-26262.",
+                "Spearheaded the standarization, definition, design, implementation and validation and deployment of safety-critical software.",
+                "Developed drivers for legacy projects on HW chips replacement to ensure business continuity"
+            ],
+            "projects": [
+                {
+                    "title": "Lear FuSi FW Platform",
+                    "description": "Developed the Firmware for the Lear FuSi Platform, including all self test and system control components for ensuring Fail Safe operation and Limp Mode"
+                }
+            ],
+            "skills": [
+                "ISO26262",
+                "Ansii C",
+                "Cross-team Collaboration",
+                "Requirements Gathering",
+                "Software Development Lifecycle (SDLC)",
+                "Waterfall Methodology",
+                "Jira / Confluence"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "degree": "Executive MBA",
+            "startDate": "11/8/2019",
+            "endDate": "1/21/2021",
+            "institution": "EADA Business School",
+            "logo": "eada_logo.png",
+            "subjects": [
+                "Financial Analysis",
+                "Marketing Strategy",
+                "Business Strategy",
+                "Operations Management",
+                "Logistics Analytics and Optimization",
+                "Innovation Management",
+                "Digital Transformation",
+                "Entrepreneurship",
+                "Leadership and People Management"
+            ],
+            "project": {
+                "title": "Safenodes",
+                "description": "Complete Business Plan definition for luxury market complete value chain traceability and audit. Based on Blockchain"
+            }
+        },
+        {
+            "degree": "Telecommunications Engineering (BSc and MSc)",
+            "startDate": "9/15/2005",
+            "endDate": "6/30/2012",
+            "institution": "Telecom UPC",
+            "logo": "upc_logo.png",
+            "subjects": [
+                "Mathematics",
+                "Physics",
+                "Electronics",
+                "Networks",
+                "Radio Frequency Communications",
+                "Computer Science",
+                "Signal Processing",
+                "Control Systems",
+                "Software Engineering",
+                "Project Management"
+            ],
+            "project": {
+                "title": "Impact of mobile transmitter sources on radio frequency energy harvesting @ Northeastern University (Boston, MA)",
+                "description": "Mathematical model for different proposals of robot driven energy distribution on open space to optimize sensors lifespan WSANs",
+                "link":"https://upcommons.upc.edu/handle/2099.1/16093"
+            }
+        },
+        {
+            "degree": "Electronics Engineering (BSc and MSc)",
+            "startDate": "9/15/2005",
+            "endDate": "6/30/2011",
+            "institution": "Telecom UPC",
+            "logo": "upc_logo.png",
+            "subjects": [
+                "Digital Electronics Design",
+                "Analogic Electronics Design",
+                "Embedded Systems",
+                "Microcontrollers",
+                "Power Electronics",
+                "RF Electronics",
+                "Control Systems",
+                "Software Engineering"
+            ],
+            "project": {
+                "title": "Depósito y caracterización de capas de Teflón sobre Silicio para la realización de dispositivos EWOD",
+                "description": "Analysis on the impact of the different phases of Teflon application over silicon wafers to create electrowetting devices. Including the design and implementation of the recipes, test bench and results analysis",
+                "link": "https://upcommons.upc.edu/handle/2099.1/12314"
+            }
+        }
+    ],
+    "honoursAndAwards": [
+        {
+            "title": "Best Paper Award ICNC'13",
+            "year": 2013,
+            "details": "Awarded for publication on IoT Energy Harvesting paper: 'Impact of Mobile Transmitter Sources on Radio Frequency Wireless Energy Harvesting'.",
+            "link": "https://ieeexplore.ieee.org/document/6504149"
+        }
+    ]
+}
