@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Timeline</title>
+    <title id="page_title">CV Timeline</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -255,19 +255,19 @@
     </header>
     <main>
         <section id="about-me">
-            <h2 class="timeline-title" onclick="toggleAboutMe()">About Me</h2>
+            <h2 id="about-me-title" class="timeline-title" onclick="toggleAboutMe()">About Me</h2>
             <div id="about-me-content"></div>
         </section>
         <section id="work-experience">
-            <h2 class="timeline-title" onclick="toggleWorkExperienceTimeline()">Work Experience</h2>
+            <h2 id="work-experience-title" class="timeline-title" onclick="toggleWorkExperienceTimeline()">Work Experience</h2>
             <div class="timeline" id="timeline-work"></div>
         </section>
         <section id="education">
-            <h2 class="timeline-title" onclick="toggleAcademicalExperienceTimeline()">Academical Experience</h2>
+            <h2 id="education-title" class="timeline-title" onclick="toggleAcademicalExperienceTimeline()">Academical Experience</h2>
             <div class="timeline" id="timeline-education"></div>
         </section>
         <section id="honours">
-            <h2 class="timeline-title">Honours and Awards</h2>
+            <h2 id="awards-title" class="timeline-title">Honours and Awards</h2>
             <ul id="honours-list"></ul>
         </section>
     </main>
@@ -284,7 +284,21 @@
         };
 
         async function loadCV(language) {
-            const response = await fetch(`cv_data_${language}.json`);
+            const response = await fetch(`cv_data_${language}.json`); 
+            if(language == "spanish"){
+                document.getElementById('about-me-title').textContent = "Sobre mí";
+                document.getElementById('work-experience-title').textContent = "Experiencia Laboral";
+                document.getElementById('education-title').textContent = "Formación Académica";
+                document.getElementById('awards-title').textContent = "Premios y Reconocimientos";
+            }else{
+                document.getElementById('about-me-title').textContent = "About me";
+                document.getElementById('work-experience-title').textContent = "Work Experience";
+                document.getElementById('education-title').textContent = "Education";
+                document.getElementById('awards-title').textContent = "Awards";
+
+            }
+
+
             const data = await response.json();
 
             document.getElementById('profile-pic').src = data.basics.image;
@@ -331,7 +345,11 @@
 
                 // Tasks Title
                 const tasksTitle = document.createElement('h4');
-                tasksTitle.textContent = "Tasks:";
+                if( language == "spanish"){
+                    tasksTitle.textContent = "Tareas:";
+                }else{
+                    tasksTitle.textContent = "Tasks:";
+                } 
                 details.appendChild(tasksTitle);
 
                 // Job Description List
@@ -345,7 +363,11 @@
                     projectContainer.className = 'projects-container';
 
                     const projectTitle = document.createElement('h4');
-                    projectTitle.textContent = "Projects:"; 
+                    if(language == "spanish"){
+                        projectTitle.textContent = "Proyectos:";
+                    }else{
+                        projectTitle.textContent = "Projects:"; 
+                    }
                     projectTitle.style.textDecoration = "underline";
                     projectContainer.appendChild(projectTitle);
 
@@ -426,6 +448,11 @@
                 // Tasks Title
                 const tasksTitle = document.createElement('h4');
                 tasksTitle.textContent = "Subjects:";
+                if(language == "spanish"){
+                    tasksTitle.textContent = "Asignaturas:";
+                }else{
+                    tasksTitle.textContent = "Subjects:";
+                }
                 details.appendChild(tasksTitle);
  
                 const subjectsList = document.createElement('ul');
@@ -438,7 +465,11 @@
                     projectContainer.className = 'projects-container';
 
                     const projectTitle = document.createElement('h4');
-                    projectTitle.textContent = "Project:"; 
+                    if(language == "spanish"){
+                        projectTitle.textContent = "Proyecto:";
+                    }else{
+                        projectTitle.textContent = "Project:"; 
+                    }
                     projectTitle.style.textDecoration = "underline";
                     projectContainer.appendChild(projectTitle);
 

@@ -4,9 +4,9 @@
       "label": "Engineering Manager - CTO",
       "image": "./ahercoa.jpg",
       "email": "ahercoa@gmail.com",
-      "phone": "+34 699625413",
+      "phone": "+34699625413",
       "url": "https://samll.github.io/",
-      "summary": "Antonio Hernández Coarasa Summary",
+      "summary": "CV Antonio Hernández Coarasa",
       "location": { 
         "postalCode": "08028",
         "city": "Barcelona",
@@ -19,7 +19,7 @@
       }]
     }, 
     "qrCode": "path/to/qr_code.png",
-    "aboutMe": "Dynamic technology leader with over 10 years of experience managing international cross-functional teams and driving strategic projects in the IT, Automotive, and sustainable AgTech industries. Expertise in spearheading Digital Transformation, enhancing Enterprise Systems, and delivering Innovative solutions.",
+    "aboutMe": "Líder Tecnológico con más de 10 años de experiencia gestionando equipos internacionales multifuncionales y liderando proyectos estratégicos en las industrias IT, Automotriz y AgTech sostenible. Experto en liderazgo de Transformación Digital, mejora de Sistemas Empresariales e Innovación continua.",
     "workExperience": [
         {
             "position": "IT Manager",
@@ -28,19 +28,31 @@
             "company": "CBC Iberia - Biogard Division",
             "logo": "./cbc_logo.png",
             "tasks": [
-                "Position executed in parallel with Agro Electronics Business Unit Manager, reporting to CEO",
-                "Manage and execute ITOps (Python + JS for API integration) with IT specialist team. 6 tools (GIS and IoT oriented) implemented and deployed for an annual time saving over 2400h",
-                "Spearheaded the successful integration of ERP, Online Marketplace and Logistics post-M&A, ensuring seamless ERP data consolidation in 6 months",
-                "Managed a multidisciplinary team of IT specialists (1 internal, 10 external), enhancing system performance and operational efficiency across the organization",
-                "Achieved a 17% reduction in operational downtime by optimizing IT operations and implementing advanced monitoring tools",
-                "Led the deployment and continuous improvement of IT infrastructure, ensuring robust cybersecurity measures with reduction on Cybersecurity alerts up to 50%"
+                "Posición ejecutada en paralelo con Agro Electronics Business Unit Manager, reportando al CEO",
+                "Gestionar y ejecutar más de 10 ITOps (Python // JS) con el equipo de especialistas en IT",
+                "Liderar la integración exitosa de ERP, Marketplace Online y Logística tras una adquisición y fusión empresarial, asegurando la consolidación de datos de ERP en 6 meses",
+                "Gestión de un equipo multidisciplinario de especialistas en IT (1 interno, 10 externos), mejorando el rendimiento del sistema y la eficiencia operativa en toda la organización",
+                "Automatizar las operaciones de IT integrando M365 AzureID para el monitoreo de datos y seguridad",
+                "Liderar el despliegue y la mejora continua de la infraestructura de IT, asegurando medidas robustas de ciberseguridad con una reducción de alertas de ciberseguridad hasta en un 50%"
+            ],
+            "projects": [
+                {
+                    "title": "GWorkspace a M365",
+                    "description": "Transición de GWorkspace a M365, incluida la integración de Azure AD para el monitoreo de datos y seguridad"
+                },
+                {
+                    "title": "Business Central y Power BI",
+                    "description": "Integración de Business Central y Power BI para análisis de datos en tiempo real e informes"
+                }
             ],
             "skills": [
-                "IT Management",
-                "Security Management",
-                "Enterprise Resource Planning (ERP)",
+                "CTO - Gestión Tecnológica",
+                "Planificación de Recursos Empresariales (ERP)",
+                "Infraestructura de Tecnología de la Información",
+                "Gestión de IT",
                 "Microsoft Power BI",
-                "Information Technology Infrastructure"
+                "Estandarización de Procesos",
+                "Gestión de Seguridad"
             ]
         },
         {
@@ -50,27 +62,45 @@
             "company": "CBC Iberia - Biogard Division",
             "logo": "./agro_electronics_logo.png",
             "tasks": [
-                "Reporting to CEO and member of Innovation Comitee in European team (including PMO lead)",
-                "Directed the development of innovative AgTech solutions, integrating webGIS, IoT, AI, and cloud services to enhance product offerings. From Market Research and Business Plan development to Portfolio preparation for 4 dierent product lines, 3 of them currently in market",
-                "Managed cross-functional teams of over 30 professionals across Europe, driving projects that aligned with company strategy and market needs",
-                "Oversaw the successful launch of IoT-based pest control systems, reducing pesticide usage by 80% and reducing cost to customer circa 50% by providing pheromone optimized application by integrating geospatial IOT data"
+                "Reportando al CEO y miembro del Comité de Innovación a nivel Europeo (incluyendo líder de PMO)",
+                "Dirigir el desarrollo de soluciones AgTech innovadoras, integrando webGIS, IoT, IA y servicios en la nube para mejorar la oferta de productos.",
+                "Desde investigación de mercado y desarrollo del Plan de Negocios hasta la preparación del portafolio para 4 líneas de productos diferentes, 3 de ellas actualmente en el mercado",
+                "Gestión de equipos multifuncionales de más de 30 profesionales en toda Europa, impulsando proyectos que se alinearon con la estrategia de la empresa y las necesidades del mercado",
+                "Supervisar el lanzamiento exitoso de sistemas de control de plagas basados en IoT, reduciendo el uso de pesticidas en un 80% y reduciendo el costo para el cliente en aproximadamente un 50% al proporcionar una aplicación optimizada de feromonas integrando datos geoespaciales de IoT"
             ],
             "projects": [
                 {
-                    "title": "IoT-based Pest Control System",
-                    "description": "Developed and launched an IoT-based pest control system that reduced pesticide usage by 80% and cost to customer by 50%."
+                    "title": "CDTI Mister 4.0",
+                    "description": "Integración de trampas electrónicas y estacies meteorológicas (IoT con AWS IOT Core) con aerosoles de confusión sexual para el control de plagas de Lobesia botrana en viñedos (Fondo Europeo otorgado a través de CDTI)"
+                },
+                {
+                    "title": "CDTI Pentrap",
+                    "description": "Sistema de control de plagas biotremológico multiespecie para Pentatómidos (Fondo Europeo otorgado a través de CDTI)"
+                },
+                {
+                    "title": "SIGIS",
+                    "description": "Adaptación de modelos de Lobesia botrana a la región española de La Rioja para optimizar los sistemas de dispensación de feromonas"
+                },
+                {
+                    "title": "Plataforma Web BiogardGIS",
+                    "description": "Gestión continua de BiogardGIS, sitio web para el control remoto de dispositivos IoT y análisis de datos sobre la presión de plagas en diferentes cultivos"
+                },
+                {
+                    "title": "Sistema de Trampa de Cubo Biogard",
+                    "description": "Definición y desarrollo de una trampa de plagas basada en IoT desde el concepto hasta la industrialización"
                 }
             ],
             "skills": [
-                "AgTech Solutions",
-                "Cross-Functional Team Leadership",
-                "Market Research",
-                "Business Plan Development",
-                "Marketing Strategy",
-                "Reporting & Analysis",
-                "Product Management",
-                "Project Management",
-                "Business Development"
+                "Soluciones AgTech",
+                "Desarrollo de Negocios",
+                "Desarrollo de Planes de Negocios",
+                "Liderazgo de Equipos Multifuncionales",
+                "Gestión de Innovación",
+                "Investigación de Mercado",
+                "Estrategia de Marketing",
+                "Gestión de Productos",
+                "Gestión de Proyectos",
+                "Informes y Análisis"
             ]
         },
         {
@@ -80,8 +110,34 @@
             "company": "Amazon",
             "logo": "amazon_logo.png",
             "tasks": [
-                "Optimized distribution center processes, reducing costs by 12%.",
-                "Led implementation of large-scale design projects in multiple locations."
+                "Responsable total de proyectos de ingeniería a gran escala con monitoreo de CAPEX",
+                "Liderazgo la Ruta Crítica, profundizar en los detalles técnicos y proporcionar soluciones innovadoras",
+                "Seguimiento de entregables a través de reuniones semanales con el equipo interno y proveedores externos",
+                "Liderazgo de revisiones de diseño y diseño de soluciones para satisfacer las necesidades del negocio y los estándares de diseño globales",
+                "Trabajo conjunto con Construcción, IT y Operaciones desde el inicio del proyecto hasta la puesta en marcha",
+                "Experto en maquinaria de etiquetado de líneas de recepción y gestión de IoT y mantenimiento predictivo"
+            ],
+            "projects": [
+                {
+                    "title": "MAD9 - Alcalá de Henares - Fase de Ejecución",
+                    "description": "Gestión de despliegue de cintas de transporte y estanterías de almacenaje (+10m) para el nuevo centro de cumplimiento de Amazon en España"
+                },
+                {
+                    "title": "BHX2 - Birmingham - Fase de Diseño",
+                    "description": "Diseño para una refactorización de edificios en funcionamiento para aumentar la capacidad cúbica y mejorar la eficiencia operativa. Incluye plan de viabilidad técnica y financiera"
+                },
+                {
+                    "title": "BCN3 - Barcelona - Fase de Ejecución",
+                    "description": "Proyecto de conversión de AMXL desde Pantry. Despliegue de estanterías altas en edificio en activo"
+                }
+            ],
+            "skills": [
+                "Dirección Técnica",
+                "Desarrollo de Negocios",
+                "Desarrollo de Planes de Negocios",
+                "Liderazgo de Equipos Multifuncionales", 
+                "Gestión de Proyectos",
+                "Informes y Análisis"
             ]
         },
         {
@@ -91,9 +147,41 @@
             "company": "Ficosa",
             "logo": "ficosa_logo.png",
             "tasks": [
-                "Managed telematics system projects for major automotive OEMs.",
-                "Supervised teams across design, testing, and implementation phases.",
-                "Integrated V-Spice processes for system validation."
+                "Evolución de carrera desde Desarrollador de SW (2014-2016) a Líder de SW (2016-2017) y Gerente de Proyectos (2017-2020) reportando al Gerente de Ingeniería.",
+                "Liderar equipos de desarrollo de ingeniería para el desarrollo de productos para diferentes clientes internacionales (Nissan, Harley Davidson, Renault) gestionando equipos de hasta 80 ingenieros entre Desarrollo (Software, Hardware, Mecánica y Radiofrecuencia), QA y Producción",
+                "Gestión de proyectos tanto en Waterfall como en Agile (Scrum). Incluyendo SW, HW, Mecánica, Validación/QA y Diseño para Manufactura",
+                "Interfaz directa con múltiples partes interesadas tanto internas (Comité de Directores, equipo de I+D y equipo de Producción) como externas (Proveedores y Cliente Final -Renault, Nissan, Harley Davidson)",
+                "Gestionar proyectos de principio a fin desde la solicitud de propuestas hasta la entrega, solicitudes de cambio y planes de contingencia",
+                "Definir y liderar planes de acción de mitigación y contingencia",
+                "Portafolio de proyectos para Unidades de Control Telemático (TCUs) sistema eCall y V2X, incluyendo integración con Infotainment",
+                "Gestionar (y ejecutar como Desarrollador) el modelo completo de V-Spice para la ejecución de trazabilidad de requisitos a pruebas"
+            ],
+            "projects": [
+                {
+                    "title": "Harley Davidson - Livewire - 2020/2021",
+                    "description": "Liderar el desarrollo de la Unidad de Control Telemático para la primera motocicleta eléctrica de Harley Davidson" 
+                },
+                {
+                    "title": "Nissan Gen2 y KAI Platforms",
+                    "description": "Liderar el desarrollo de la Unidad de Control Telemático para las nuevas plataformas Nissan Gen2 y KAI"
+                },
+                {
+                    "title": "Renault SL8 Refactor",
+                    "description": "Liderar el refactor y recertificación de SL8 para el mercado ruso"
+                }
+            ],
+            "skills": [
+                "Dirección Técnica",
+                "Ingeniería de Electrónica Embebida",
+                "Gestión de Proyectos",
+                "Resolución de Problemas",
+                "Requisitos Técnicos",
+                "Control de Calidad",
+                "Colaboración entre Equipos",
+                "Recopilación de Requisitos",
+                "Ciclo de Vida del Desarrollo de Software (SDLC)",
+                "Metodologías Waterfall y Scrum",
+                "Jira / Confluence"
             ]
         },
         {
@@ -103,8 +191,24 @@
             "company": "Lear Corporation",
             "logo": "lear_logo.png",
             "tasks": [
-                "Developed embedded systems for automotive applications under ISO-26262.",
-                "Contributed to the validation and deployment of safety-critical software."
+                "Desarrollar sistemas embebidos para aplicaciones automotrices bajo ISO-26262.",
+                "Liderar la estandarización, definición, diseño, implementación, validación y despliegue de software de seguridad crítica.",
+                "Desarrollar controladores para proyectos heredados en reemplazo de chips de hardware para asegurar la continuidad del negocio"
+            ],
+            "projects": [
+                {
+                    "title": "Lear FuSi FW Platform",
+                    "description": "Desarrollar el firmware para la plataforma FuSi de Lear, incluyendo todos los componentes de autoprueba y control del sistema para asegurar la operación a prueba de fallos y el modo de emergencia"
+                }
+            ],
+            "skills": [
+                "ISO26262",
+                "Ansi C",
+                "Colaboración entre Equipos",
+                "Recopilación de Requisitos",
+                "Ciclo de Vida del Desarrollo de Software (SDLC)",
+                "Metodología Waterfall",
+                "Jira / Confluence"
             ]
         }
     ],
@@ -115,39 +219,75 @@
             "endDate": "1/21/2021",
             "institution": "EADA Business School",
             "logo": "eada_logo.png",
-            "tasks": [
-                "Financial Analysis",
-                "Business Strategy"
-            ]
+            "subjects": [
+                "Análisis Financiero",
+                "Estrategia de Marketing",
+                "Estrategia Empresarial",
+                "Gestión de Operaciones",
+                "Análisis y Optimización de Logística",
+                "Gestión de Innovación",
+                "Transformación Digital",
+                "Emprendimiento",
+                "Liderazgo y Gestión de Personas"
+            ],
+            "project": {
+                "title": "Safenodes",
+                "description": "Definición completa del plan de negocios para la trazabilidad y auditoría de la cadena de valor del mercado de lujo. Basado en Blockchain"
+            }
         },
         {
-            "degree": "Telecommunications Engineering (BSc and MSc)",
+            "degree": "Ingeniería de Telecomunicaciones (BSc y MSc)",
             "startDate": "9/15/2005",
             "endDate": "6/30/2012",
             "institution": "Telecom UPC",
             "logo": "upc_logo.png",
-            "tasks": [
-                "Developed embedded systems for automotive applications under ISO-26262.",
-                "Contributed to the validation and deployment of safety-critical software."
-            ]
+            "subjects": [
+                "Matemáticas",
+                "Física",
+                "Electrónica",
+                "Redes",
+                "Comunicaciones de Radiofrecuencia",
+                "Ciencias de la Computación",
+                "Procesamiento de Señales",
+                "Sistemas de Control",
+                "Ingeniería de Software",
+                "Gestión de Proyectos"
+            ],
+            "project": {
+                "title": "Impacto de las fuentes transmisoras móviles en la recolección de energía de radiofrecuencia @ Northeastern University (Boston, MA)",
+                "description": "Modelo matemático para diferentes propuestas de distribución de energía impulsada por robots en espacios abiertos para optimizar la vida útil de los sensores en WSANs",
+                "link":"https://upcommons.upc.edu/handle/2099.1/16093"
+            }
         },
         {
-            "degree": "Electronics Engineering (BSc and MSc)",
+            "degree": "Ingeniería Electrónica (BSc y MSc)",
             "startDate": "9/15/2005",
             "endDate": "6/30/2011",
             "institution": "Telecom UPC",
             "logo": "upc_logo.png",
-            "tasks": [
-                "Developed embedded systems for automotive applications under ISO-26262.",
-                "Contributed to the validation and deployment of safety-critical software."
-            ]
+            "subjects": [
+                "Diseño de Electrónica Digital",
+                "Diseño de Electrónica Analógica",
+                "Sistemas Embebidos",
+                "Microcontroladores",
+                "Electrónica de Potencia",
+                "Electrónica de RF",
+                "Sistemas de Control",
+                "Ingeniería de Software"
+            ],
+            "project": {
+                "title": "Depósito y caracterización de capas de Teflón sobre Silicio para la realización de dispositivos EWOD",
+                "description": "Análisis del impacto de las diferentes fases de aplicación de Teflón sobre obleas de silicio para crear dispositivos de electrowetting. Incluyendo el diseño e implementación de las recetas, banco de pruebas y análisis de resultados",
+                "link": "https://upcommons.upc.edu/handle/2099.1/12314"
+            }
         }
     ],
     "honoursAndAwards": [
         {
             "title": "Best Paper Award ICNC'13",
             "year": 2013,
-            "details": "Awarded for publication on IoT Energy Harvesting paper: 'Impact of Mobile Transmitter Sources on Radio Frequency Wireless Energy Harvesting'."
+            "details": "Premio otorgado por la publicación sobre recolección de energía IoT: 'Impacto de las fuentes transmisoras móviles en la recolección de energía inalámbrica de radiofrecuencia'.",
+            "link": "https://ieeexplore.ieee.org/document/6504149"
         }
     ]
 }
