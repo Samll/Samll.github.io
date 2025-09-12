@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lector de Matrículas (Android · sin compilar)</title>
+<style>
+  :root { --gap: 12px; --pad: 14px; }
+  body { font-family: system-ui, Arial, sans-serif; margin:0; background:#0b0f14; color:#e8eef4; }
+  header { padding: var(--pad); background:#121821; position:sticky; top:0; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,.3); }
+  h1 { margin:0; font-size:1.1rem; }
+  .wrap { padding: var(--pad); display:grid; gap: var(--gap); }
+  .card { background:#121821; border:1px solid #1f2a38; border-radius:12px; padding:var(--pad); }
+  .grid { display:grid; gap: var(--gap); }
+  .controls { display:grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  label { font-size:.9rem; opacity:.9; display:block; margin-bottom:6px; }
+  input, select, button, textarea {
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid #2a3a4f; background:#0e141c; color:#e8eef4;
+  }
+  button { background:#1b88f5; border:none; font-weight:600; }
+  button.secondary { background:#263445; }
+  button.warn { background:#e25858; }
+  video { width:100%; border-radius:12px; background:#000; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { padding:8px; border-bottom:1px solid #223049; font-size:.92rem; }
+  th { text-align:left; opacity:.85; }
+  .rowimg { width:84px; height:auto; border-radius:6px; border:1px solid #1f2a38; }
+  .pill { font-variant-numeric: tabular-nums; background:#20324a; padding:2px 8px; border-radius:999px; font-size:.8rem; }
+  .inline { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .small { font-size:.85rem; opacity:.85; }
+  footer { text-align:center; padding: 24px; opacity:.6; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📷 Lector de Matrículas – Android (sin compilar)</h1>
+</header>
+
+<div class="wrap">
+
+  <div class="card grid">
+    <div class="grid" style="grid-template-columns:1fr; gap: var(--gap);">
+      <div>
+        <label>API Key (ALPR en la nube)</label>
+        <input id="apiKey" type="password" placeholder="Pega aquí tu API key (p. ej., Plate Recognizer)" autocomplete="off" />
+        <div class="small">Se envía solo al proveedor ALPR que configures abajo. Nada se sube a ningún otro sitio.</div>
+      </div>
+
+      <div class="controls">
+        <div>
+          <label>Proveedor</label>
+          <select id="provider">
+            <option value="platerecognizer">Plate Recognizer (recomendado)</option>
+            <option value="openalpr">OpenALPR Cloud</option>
+          </select>
+        </div>
+        <div>
+          <label>Región</label>
+          <select id="region">
+            <option value="eu" selected>eu (Europa)</option>
+            <option value="es">es (España)</option>
+            <option value="">auto</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div>
+          <label>Intervalo (ms entre capturas)</label>
+          <input id="intervalMs" type="number" min="500" value="1500" />
+        </div>
+        <div>
+          <label>Confianza mínima (0–1)</label>
+          <input id="minScore" type="number" step="0.01" min="0" max="1" value="0.5" />
+        </div>
+      </div>
+
+      <div class="inline">
+        <button id="btnStartCam">Iniciar cámara</button>
+        <button id="btnStopCam" class="secondary">Parar cámara</button>
+        <button id="btnScan">Empezar escaneo</button>
+        <button id="btnStopScan" class="secondary">Parar escaneo</button>
+      </div>
+
+      <div class="inline">
+        <button id="btnExport" class="secondary">Exportar CSV</button>
+        <button id="btnClear" class="warn">Limpiar lista</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <video id="video" playsinline muted></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="inline"><strong>Listado</strong> <span id="count" class="pill">0</span></div>
+    <div class="small" style="margin-top:6px;">Se deduplica por matrícula durante 5 minutos para no repetir lecturas.</div>
+    <div style="overflow:auto; margin-top:10px;">
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Matrícula</th>
+            <th>Conf.</th>
+            <th>Hora</th>
+            <th>Fuente</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Hecho para correr 100% en tu móvil. Requiere API de ALPR en la nube.
+</footer>
+
+<script>
+(function(){
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const tbody = document.getElementById('tbody');
+  const count = document.getElementById('count');
+
+  const btnStartCam = document.getElementById('btnStartCam');
+  const btnStopCam  = document.getElementById('btnStopCam');
+  const btnScan     = document.getElementById('btnScan');
+  const btnStopScan = document.getElementById('btnStopScan');
+  const btnExport   = document.getElementById('btnExport');
+  const btnClear    = document.getElementById('btnClear');
+
+  const apiKey   = document.getElementById('apiKey');
+  const provider = document.getElementById('provider');
+  const region   = document.getElementById('region');
+  const intervalMs = document.getElementById('intervalMs');
+  const minScore   = document.getElementById('minScore');
+
+  let stream = null;
+  let timer  = null;
+
+  // Deduplicación: { plate: lastTimestampMs }
+  const seen = new Map();
+  const rows = [];
+
+  function nowIso() {
+    try {
+      // Hora local del dispositivo
+      return new Date().toLocaleString();
+    } catch (_) {
+      return new Date().toISOString();
+    }
+  }
+
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' } , width: { ideal: 1280 }, height: { ideal: 720 } },
+        audio: false
+      });
+      video.srcObject = stream;
+      await video.play();
+    } catch (err) {
+      alert('No se pudo acceder a la cámara: ' + err.message);
+    }
+  }
+
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+    video.pause();
+    video.srcObject = null;
+  }
+
+  function grabFrame() {
+    const w = video.videoWidth;
+    const h = video.videoHeight;
+    if (!w || !h) return null;
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, w, h);
+    return new Promise((resolve) => {
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.85);
+    });
+  }
+
+  // Normaliza matrícula: mayúsculas, sin espacios, sin guiones
+  function normPlate(plate) {
+    return (plate || '')
+      .toUpperCase()
+      .replace(/[\s\-·\.]/g,'')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+
+  // Filtro rápido para ES actual (####LLL) o genérico EU (6-8 alfanum)
+  function plausiblePlate(plate) {
+    const p = normPlate(plate);
+    // Formato ES moderno: 4 dígitos + 3 letras (excluye vocales y Ñ/Q) — aquí no filtramos letras concretas para no perder lecturas borderline
+    if (/^\d{4}[A-Z]{3}$/.test(p)) return true;
+    // Acepta también general europeo 6-8 chars alfanum
+    if (/^[A-Z0-9]{6,8}$/.test(p)) return true;
+    return false;
+  }
+
+  function addRow({imgDataUrl, plate, score, time, source}) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><img class="rowimg" src="${imgDataUrl}" alt="captura"/></td>
+      <td><strong>${plate}</strong></td>
+      <td>${(score!=null)? score.toFixed(2): '-'}</td>
+      <td>${time}</td>
+      <td>${source}</td>
+    `;
+    tbody.prepend(tr);
+    count.textContent = tbody.children.length;
+  }
+
+  function dataUrlFromBox(box) {
+    // Devuelve un recorte del canvas (si hay bbox), si no el frame entero
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    let x=0,y=0,ww=w,hh=h;
+    if (box && typeof box.xmin === 'number') {
+      x = Math.max(0, box.xmin);
+      y = Math.max(0, box.ymin);
+      ww = Math.min(w - x, (box.xmax - box.xmin));
+      hh = Math.min(h - y, (box.ymax - box.ymin));
+    }
+    const tmp = document.createElement('canvas');
+    tmp.width = Math.max(10, ww);
+    tmp.height = Math.max(10, hh);
+    const tctx = tmp.getContext('2d');
+    tctx.drawImage(canvas, x, y, ww, hh, 0, 0, ww, hh);
+    return tmp.toDataURL('image/jpeg', 0.85);
+  }
+
+  async function callALPR(blob) {
+    const key = apiKey.value.trim();
+    const prov = provider.value;
+    const reg = region.value.trim();
+    const min = parseFloat(minScore.value || '0.5') || 0.5;
+
+    if (!key) throw new Error('Falta API key.');
+
+    if (prov === 'platerecognizer') {
+      const url = 'https://api.platerecognizer.com/v1/plate-reader/';
+      const form = new FormData();
+      form.append('upload', blob, 'frame.jpg');
+      if (reg) form.append('regions', reg);
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Authorization': 'Token ' + key },
+        body: form
+      });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status + ' en Plate Recognizer');
+      const json = await resp.json();
+      const results = [];
+      (json.results || []).forEach(r => {
+        const plate = r.plate;
+        const score = r.score ?? (r.dscore || 0);
+        if (score >= min && plausiblePlate(plate)) {
+          results.push({ plate, score, box: r.box, source: 'PlateRec' });
+        }
+      });
+      return results;
+    }
+
+    if (prov === 'openalpr') {
+      // Requiere cuenta de OpenALPR Cloud; endpoint y header pueden variar según plan
+      const url = 'https://api.openalpr.com/v3/recognize_bytes?recognize_vehicle=0&country=' + (reg || 'eu');
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Authorization': 'Token ' + key, 'Content-Type': 'application/octet-stream' },
+        body: await blob.arrayBuffer()
+      });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status + ' en OpenALPR');
+      const json = await resp.json();
+      const results = [];
+      (json.results || []).forEach(r => {
+        const plate = r.plate;
+        const score = r.confidence ? (r.confidence/100) : 0;
+        if (score >= (parseFloat(min) || 0.5) && plausiblePlate(plate)) {
+          const b = r.coordinates ? {
+            xmin: Math.min(...r.coordinates.map(c=>c.x)),
+            xmax: Math.max(...r.coordinates.map(c=>c.x)),
+            ymin: Math.min(...r.coordinates.map(c=>c.y)),
+            ymax: Math.max(...r.coordinates.map(c=>c.y)),
+          } : null;
+          results.push({ plate, score, box: b, source: 'OpenALPR' });
+        }
+      });
+      return results;
+    }
+
+    throw new Error('Proveedor no soportado.');
+  }
+
+  function shouldAdd(plate) {
+    const key = normPlate(plate);
+    const now = Date.now();
+    const last = seen.get(key) || 0;
+    const dedupMs = 5 * 60 * 1000; // 5 minutos
+    if (now - last < dedupMs) return false;
+    seen.set(key, now);
+    return true;
+  }
+
+  async function scanTick() {
+    try {
+      const blob = await grabFrame();
+      if (!blob) return;
+      const detections = await callALPR(blob);
+      if (!detections.length) return;
+
+      for (const det of detections) {
+        const p = normPlate(det.plate);
+        if (!shouldAdd(p)) continue;
+        const img = dataUrlFromBox(det.box);
+        const time = nowIso();
+        rows.push({ plate:p, score: det.score ?? null, time, source: det.source, img });
+        addRow({ imgDataUrl: img, plate: p, score: det.score ?? null, time, source: det.source });
+      }
+    } catch (err) {
+      console.warn('Scan error:', err);
+    }
+  }
+
+  btnStartCam.addEventListener('click', startCamera);
+  btnStopCam.addEventListener('click', () => { stopCamera(); });
+
+  btnScan.addEventListener('click', () => {
+    if (!stream) { alert('Primero inicia la cámara.'); return; }
+    const ms = Math.max(500, parseInt(intervalMs.value || '1500', 10) || 1500);
+    if (timer) clearInterval(timer);
+    timer = setInterval(scanTick, ms);
+    scanTick(); // primer tick inmediato
+  });
+
+  btnStopScan.addEventListener('click', () => {
+    if (timer) { clearInterval(timer); timer = null; }
+  });
+
+  btnClear.addEventListener('click', () => {
+    if (!confirm('¿Seguro que quieres limpiar la lista?')) return;
+    tbody.innerHTML = '';
+    count.textContent = '0';
+    rows.length = 0;
+    seen.clear();
+  });
+
+  btnExport.addEventListener('click', () => {
+    if (!rows.length) { alert('No hay datos.'); return; }
+    const header = ['plate','score','time','source'];
+    const csv = [header.join(',')].concat(rows.map(r =>
+      [r.plate, (r.score!=null? r.score.toFixed(3): ''), JSON.stringify(r.time), r.source].join(',')
+    )).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'matriculas.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // Limpieza al cerrar
+  window.addEventListener('pagehide', () => {
+    if (timer) clearInterval(timer);
+    stopCamera();
+  });
+})();
+</script>
+</body>
+</html>
