@@ -6,7 +6,8 @@ const acertijos = [
     mostrarAcertijo2,
     mostrarAcertijo3,
     mostrarAcertijo4,
-    mostrarAcertijo5
+    mostrarAcertijo5,
+    mostrarAcertijo6
 ];
 let paso = 0;
 
@@ -57,6 +58,16 @@ function mostrarAcertijo4() {
 }
 
 function mostrarAcertijo5() {
+    document.getElementById('app').innerHTML = `
+        <h1>Regalo Nines</h1>
+        <h2>Acertijo 5</h2>
+        <p>Adivina adivinanza: Brillan mucho y saben bailar, danzan sobre la tarta y con un soplido se van</p>
+        <input type="text" id="respuesta" placeholder="Respuesta...">
+        <button onclick="comprobarClave('velas')">Comprobar</button>
+    `;
+}
+
+function mostrarAcertijo6() {
     document.getElementById('app').innerHTML = `
         <h1>Regalo Nines</h1>
         <h2>¡Último acertijo resuelto!</h2>
