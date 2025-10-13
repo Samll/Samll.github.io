@@ -29,20 +29,11 @@
             "logo": "./cbc_logo.png",
             "tasks": [
                 "Position executed in parallel with Agro Electronics Business Unit Manager, reporting to CEO",
-                "Manage and execute +10 ITOps (Python // JS) with IT specialist team",
-                "Spearhead the successful integration of ERP, Online Marketplace and Logistics post-M&A, ensuring seamless ERP data consolidation in 6 months",
-                "Manage a multidisciplinary team of IT specialists (1 internal, 10 external), enhancing system performance and operational efficiency across the organization",
-                "Automate IT operations integrating M365 AzureID for Data and Security monitoring",
-                "Lead the deployment and continuous improvement of IT infrastructure, ensuring robust cybersecurity measures with reduction on Cybersecurity alerts up to 50%"
-
-
-                
-        "Manage and execute +10 ITOps (Python + JS for API integration) with IT specialist team",
-        "Spearheaded ERP integration with Online Marketplace and Logistics post-M&A, achieving full integration within 6 months",
-        "Managed a multidisciplinary team of +10 IT specialists (internal & external), reducing 17% workload",
-        "Automated IT operations integrating M365 AzureID for Data and Security monitoring", 
-        "Led continuous IT infrastructure improvements ensuring robust security, reducing incidents >50%",
-        
+                "Managed and executed +10 ITOps (Python + JS for API integration) with IT specialist team",
+                "Spearheaded ERP integration with Online Marketplace and Logistics post-M&A, achieving full integration within 6 months",
+                "Managed a multidisciplinary team of +10 IT specialists (internal & external), reducing 17% workload",
+                "Automated IT operations integrating M365 AzureID for Data and Security monitoring", 
+                "Led continuous IT infrastructure improvements ensuring robust security, reducing incidents >50%"
             ],
             "projects": [
                 {
