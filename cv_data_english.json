@@ -4,9 +4,9 @@
       "label": "Engineering Manager - CTO",
       "image": "./ahercoa.jpg",
       "email": "ahercoa@gmail.com",
-      "phone": "+34699625413",
+      "phone": "+34 699625413",
       "url": "https://samll.github.io/",
-      "summary": "Antonio Hernández Coarasa Summary",
+      "summary": "Dynamic Technology Leader with over 10 years of experience managing international cross-functional teams and driving strategic projects in the IT, Automotive, and sustainable AgTech industries. Expertise in spearheading Digital Transformation, enhancing Enterprise Systems, and delivering Innovative solutions.",
       "location": { 
         "postalCode": "08028",
         "city": "Barcelona",
@@ -34,6 +34,15 @@
                 "Manage a multidisciplinary team of IT specialists (1 internal, 10 external), enhancing system performance and operational efficiency across the organization",
                 "Automate IT operations integrating M365 AzureID for Data and Security monitoring",
                 "Lead the deployment and continuous improvement of IT infrastructure, ensuring robust cybersecurity measures with reduction on Cybersecurity alerts up to 50%"
+
+
+                
+        "Manage and execute +10 ITOps (Python + JS for API integration) with IT specialist team",
+        "Spearheaded ERP integration with Online Marketplace and Logistics post-M&A, achieving full integration within 6 months",
+        "Managed a multidisciplinary team of +10 IT specialists (internal & external), reducing 17% workload",
+        "Automated IT operations integrating M365 AzureID for Data and Security monitoring", 
+        "Led continuous IT infrastructure improvements ensuring robust security, reducing incidents >50%",
+        
             ],
             "projects": [
                 {
@@ -62,11 +71,12 @@
             "company": "CBC Iberia - Biogard Division",
             "logo": "./agro_electronics_logo.png",
             "tasks": [
-                "Reporting to CEO and member of Innovation Comitee in European team (including PMO lead)",
-                "Manage the development of innovative AgTech solutions, integrating webGIS, IoT, AI, and cloud services to enhance product offerings.",
-                "From Market Research and Business Plan development to Portfolio preparation for 4 different product lines, 3 of them currently in market",
-                "Manage cross-functional teams of over 30 professionals across Europe, driving projects that aligned with company strategy and market needs",
-                "Oversee the successful launch of IoT-based pest control systems, reducing pesticide usage by 80% and reducing cost to customer circa 50% by providing pheromone optimized application by integrating geospatial IOT data"
+                "Managed all Agtech CBC Iberia portfolio and roadmap directly with CEO",
+                "Member of Innovation Committee in European team (including PMO lead)",
+                "Led development of webGIS, IoT, AI and cloud-based AgTech solutions. From Market Research to Industrialization",
+                "Developed market strategy and portfolio for 4 product lines (3 commercialized)",
+                "Led 30+ cross-functional professionals across Europe for company strategic projects",
+                "Launched IoT-based pest control systems reducing pesticide usage by 80%, and -50% cost"
             ],
             "projects": [
                 {
@@ -110,12 +120,11 @@
             "company": "Amazon",
             "logo": "amazon_logo.png",
             "tasks": [
-                "End-to-end ownership for large-scale engineering projects with CAPEX monitoring",
-                "Lead Critical Path, Dive Deep on technical details and provide innovative solutions",
-                "Deliverable tracking through weekly meetings with internal team and external vendors",
-                "Lead Design Reviews and Solution Design to meet business needs and global design standards",
-                "Work very closely with Construction, IT and Operation from project start to project go live",
-                "SME for Receive line Label machinery and with IOT management and predictive maintenance"
+                "Led large-scale optimization fulfillment center operations. Delivered 2 full sites in Spain and documented proposal for 3 more in UK",
+                "SME for Receive line Label machinery and with IOT management and predictive maintenance",
+                "Led design reviews and technical solution designs meeting global standards",
+                "Managed critical path and vendor coordination",
+                "Delivered engineering and construction projects on schedule"
             ],
             "projects": [
                 {
