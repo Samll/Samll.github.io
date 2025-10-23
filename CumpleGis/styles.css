@@ -17,6 +17,9 @@ h1, h2, h3 {
     color: #7c183c;
     text-align: center;
 }
+p { 
+    text-align: center;
+}
 button, .download-link {
     background: #7c183c;
     color: #fff;
@@ -42,6 +45,7 @@ input[type="text"] {
     border: 1px solid #ccc;
     font-size: 1rem;
     background: #fff;
+    text-align: center;
 }
 .puzzle-board {
     display: grid;
@@ -189,3 +193,4 @@ input[type="text"] {
         max-width: 98vw;
     }
 }
+
