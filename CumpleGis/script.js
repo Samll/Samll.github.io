@@ -15,16 +15,6 @@ const PUZZLE_ROWS = 3; // filas
 const PUZZLE_COLS = 5; // columnas
 const PUZZLE_MODE = 'swap'; // 'swap' para intercambiar piezas, 'slide' para deslizar
 
-function mostrarAcertijo2() {
-    document.getElementById('app').innerHTML = `
-        <h1>Regalo Gis</h1>
-        <h2>Acertijo 1: ¡Resuelve el puzzle!</h2>
-        <div id="puzzle-container"></div>
-        <button id="puzzle-next" style="display:none">Siguiente</button>
-    `;
-    iniciarPuzzle();
-}
-
 function mostrarAcertijo1() {
     document.getElementById('app').innerHTML = `
         <h1>Regalo Gis</h1>
@@ -33,6 +23,8 @@ function mostrarAcertijo1() {
         <input type="text" id="respuesta" placeholder="Respuesta...">
         <button onclick="comprobarClave('1')">Comprobar</button>
     `;
+    // Autofocus en el campo de respuesta
+    setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
 }
 
 function mostrarAcertijo2() {
@@ -43,6 +35,8 @@ function mostrarAcertijo2() {
         <input type="text" id="respuesta" placeholder="Respuesta...">
         <button onclick="comprobarClave('2')">Comprobar</button>
     `;
+    // Autofocus en el campo de respuesta
+    setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
 }
 
 function mostrarAcertijo3() {
@@ -53,6 +47,8 @@ function mostrarAcertijo3() {
         <input type="text" id="respuesta" placeholder="Respuesta...">
         <button onclick="comprobarClave('3')">Comprobar</button>
     `;
+    // Autofocus en el campo de respuesta
+    setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
 }
 
 // callback que se ejecuta cuando se resuelve el puzzle (puede sobrescribirse)
@@ -234,4 +230,5 @@ function esSolucionableRect(piezas, rows, cols) {
 window.onload = () => {
     acertijos[0]();
 };
+
 
