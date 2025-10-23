@@ -58,28 +58,10 @@ function mostrarAcertijo3() {
 // callback que se ejecuta cuando se resuelve el puzzle (puede sobrescribirse)
 let puzzleCompletionCallback = null;
 
-function mostrarFinalCelebracion() {
-    document.getElementById('app').innerHTML = `
-        <h1>Regalo Gis</h1>
-        <h2>¡Último acertijo resuelto!</h2>
-        <div class="cake">
-            <img src="TartaNines.png" alt="Tarta de cumpleaños" class="cake-img" style="max-width: 220px; border-radius: 16px; box-shadow: 0 2px 12px #d2691e33;"/>
-            <div class="felicidades">¡Felicidades Nines!</div>
-        </div>
-        <a class="download-link" href="regaloNines.pdf" download>Descargar tu regalo 🎁</a>
-        <audio id="audio-nines" src="musicaNines.mp3" autoplay loop></audio>
-    `;
-    const audio = document.getElementById('audio-nines');
-    if (audio) {
-        audio.play().catch(()=>{});
-    }
-}
-
 function mostrarBaile() {
     // Muestra el vídeo de baile.
     document.getElementById('app').innerHTML = `
-        <h1>Regalo Gis</h1>
-        <div style="text-align:center; margin-top:12px;">
+        <div style="text-align:center; margin-top:2px;">
             <video id="final-video" src="Baile.mp4" controls playsinline style="max-height:100%; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.12);"></video>
         </div>
     `;
@@ -98,8 +80,7 @@ function mostrarBaile() {
 function mostrarEco() {
     // Muestra el vídeo de eco
     document.getElementById('app').innerHTML = `
-        <h1>Regalo per tots :D</h1>
-        <div style="text-align:center; margin-top:12px;">
+        <div style="text-align:center; margin-top:2px;">
             <video id="final-video" src="Eco.mp4" controls playsinline style="max-height:100%; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.12);"></video>
         </div>
     `;
@@ -253,3 +234,4 @@ function esSolucionableRect(piezas, rows, cols) {
 window.onload = () => {
     acertijos[0]();
 };
+
