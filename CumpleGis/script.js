@@ -19,9 +19,12 @@ function mostrarAcertijo1() {
     document.getElementById('app').innerHTML = `
         <h1>Regalo Gis</h1>
         <h2>Acertijo 1</h2>
-        <p>Di 1</p>
+        <p>¿Que sale en la imagen (Otto se sabe el nombre... pero con número?</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="ton.jpg" alt="Barco pirata" style="max-width:320px; width:90%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12);">
+        </div>
         <input type="text" id="respuesta" placeholder="Respuesta...">
-        <button onclick="comprobarClave('1')">Comprobar</button>
+        <button onclick="comprobarClave('ton 618')">Comprobar</button>
     `;
     // Autofocus en el campo de respuesta
     setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
@@ -31,9 +34,12 @@ function mostrarAcertijo2() {
     document.getElementById('app').innerHTML = `
         <h1>Regalo Gis</h1>
         <h2>Acertijo 2</h2>
-        <p>Di 2:</p>
+        <p>¿Cómo se llamaba el mejor barco pirata del mundo y que Tote se atascaba al decirlo?</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="monkeyis1.jpg" alt="Barco pirata" style="max-width:320px; width:90%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12);">
+        </div>
         <input type="text" id="respuesta" placeholder="Respuesta...">
-        <button onclick="comprobarClave('2')">Comprobar</button>
+        <button onclick="comprobarClave('pepino marino')">Comprobar</button>
     `;
     // Autofocus en el campo de respuesta
     setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
@@ -43,9 +49,12 @@ function mostrarAcertijo3() {
     document.getElementById('app').innerHTML = `
         <h1>Regalo Gis</h1>
         <h2>Acertijo 3</h2>
-        <p>Di 3</p>
+        <p>¿Cuando vas por la carretera en pendiente, cuál era el mayor riesgo que Papi siempre nos contaba? La ...</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="tijera.jpg" alt="Barco pirata" style="max-width:320px; width:90%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12);">
+        </div>
         <input type="text" id="respuesta" placeholder="Respuesta...">
-        <button onclick="comprobarClave('3')">Comprobar</button>
+        <button onclick="comprobarClave('tijera')">Comprobar</button>
     `;
     // Autofocus en el campo de respuesta
     setTimeout(() => { const el = document.getElementById('respuesta'); if (el) el.focus(); }, 50);
@@ -93,7 +102,7 @@ function mostrarEco() {
 function startPuzzleEco() {
     // Prepara la interfaz del puzzle (reemplaza el contenido del app)
     document.getElementById('app').innerHTML = `
-        <h1>Regalo Gis</h1>
+        <h1>Regalo de ToGis para los demás</h1>
         <h2>Resuelve el puzzle final</h2>
         <div id="puzzle-container"></div>
         <button id="puzzle-next" style="display:none">Siguiente</button>
