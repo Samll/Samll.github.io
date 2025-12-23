@@ -1,0 +1,146 @@
+cv:
+  name: Antonio Hernández Coarasa
+  location: Barcelona, ES
+  email: ahercoa@gmail.com
+  phone: +34 699625413
+  website: https://samll.github.io/
+  social_networks:
+    - network: LinkedIn
+      username: ahercoa
+
+  sections:
+    profile:
+      - Dynamic Technology Leader with 10+ years of experience leading international, cross-functional teams across IT, Automotive, and AgTech industries. Proven track record in Digital Transformation, ERP and Enterprise Systems integration, IoT and data-driven platforms, and end-to-end delivery of complex technological products from concept to industrialization.
+
+    experience:
+      - company: CBC Iberia – Biogard Division
+        position: IT Manager
+        start_date: 2023-01
+        end_date: present
+        location: Spain
+        summary: IT leadership role executed in parallel with Agro Electronics Business Unit Manager, reporting directly to the CEO.
+        highlights:
+          - Led and executed 10+ IT operations and integrations using Python and JavaScript for API-based systems
+          - Drove post-M&A ERP, e-commerce, and logistics integration achieving full operational integration in under 6 months
+          - Managed a multidisciplinary team of 10+ internal and external IT specialists, reducing operational workload by 17%
+          - Automated IT operations leveraging Microsoft 365, Azure AD, and security telemetry
+          - Strengthened IT security posture, reducing infrastructure incidents by more than 50%
+
+      - company: CBC Iberia – Biogard Division
+        position: Agro Electronics Business Unit Manager
+        start_date: 2021-06
+        end_date: present
+        location: Spain
+        summary: Ownership of CBC Iberia AgTech portfolio and roadmap, working directly with executive leadership.
+        highlights:
+          - Defined and executed AgTech strategy across IoT, webGIS, AI, and cloud platforms from market research to industrialization
+          - Member of the European Innovation Committee, contributing to portfolio and PMO-level decisions
+          - Built and commercialized 3 out of 4 new AgTech product lines
+          - Coordinated over 30 cross-functional professionals across multiple European countries
+          - Delivered IoT-based pest control systems reducing pesticide usage by 80% and operational costs by 50%
+
+      - company: Amazon
+        position: MHE Engineering Project Manager
+        start_date: 2020-07
+        end_date: 2021-06
+        location: Spain / United Kingdom
+        summary: Engineering project management role within Amazon Fulfillment Centers.
+        highlights:
+          - Delivered two full fulfillment centers in Spain and prepared technical proposals for three additional UK sites
+          - Acted as SME for receive-line labeling machinery and IoT-driven predictive maintenance
+          - Led design reviews, vendor coordination, and critical-path execution under global Amazon standards
+          - Delivered large-scale engineering and construction projects on schedule
+
+      - company: Ficosa
+        position: Automotive Senior Project Manager
+        start_date: 2014-11
+        end_date: 2020-07
+        location: Spain
+        summary: Progressive career growth from Software Developer to Project Manager within automotive electronics.
+        highlights:
+          - Led engineering teams of up to 80 professionals across software, hardware, mechanical, RF, QA, and production
+          - Managed end-to-end automotive projects from RFP to SOP for OEMs including Nissan, Renault, and Harley-Davidson
+          - Delivered projects using both Waterfall and Agile (Scrum) methodologies
+          - Owned stakeholder management across executive committees, suppliers, and OEM customers
+          - Implemented full V-Spice traceability from requirements to validation
+
+      - company: Lear Corporation
+        position: Automotive Safety Firmware Engineer
+        start_date: 2012-09
+        end_date: 2014-11
+        location: Spain
+        summary: Embedded software engineering role focused on automotive safety-critical systems.
+        highlights:
+          - Developed ISO 26262-compliant firmware for automotive safety applications
+          - Defined and standardized safety software architecture, validation, and deployment processes
+          - Developed low-level drivers for legacy hardware replacements ensuring product continuity
+
+    education:
+      - institution: EADA Business School
+        area: Executive MBA
+        degree: MBA
+        start_date: 2019-11
+        end_date: 2021-01
+        location: Barcelona, Spain
+        summary: Executive MBA with strong focus on strategy, innovation, and digital transformation.
+        highlights:
+          - Financial Analysis, Marketing Strategy, Business Strategy, Operations Management
+          - Innovation Management, Digital Transformation, Entrepreneurship
+          - Leadership and People Management
+          - Business Plan project, Blockchain-based luxury supply chain traceability platform
+
+      - institution: Universitat Politècnica de Catalunya (UPC)
+        area: Telecommunications Engineering
+        degree: BSc & MSc
+        start_date: 2005-09
+        end_date: 2012-06
+        location: Barcelona, Spain
+        summary: Dual-degree engineering education with strong mathematical, electronic, and systems foundation.
+        highlights:
+          - Signal Processing, RF Communications, Networks, Control Systems, Software Engineering
+          - Master thesis at Northeastern University (Boston, MA) on RF energy harvesting for WSANs
+
+      - institution: Universitat Politècnica de Catalunya (UPC)
+        area: Electronics Engineering
+        degree: BSc & MSc
+        start_date: 2005-09
+        end_date: 2011-06
+        location: Barcelona, Spain
+        summary: Specialized education in electronic systems and embedded design.
+        highlights:
+          - Digital and Analog Electronics, Embedded Systems, Microcontrollers, Power Electronics
+          - Master thesis on EWOD devices using Teflon layers on silicon wafers
+
+    publications:
+      - title: Impact of Mobile Transmitter Sources on Radio Frequency Wireless Energy Harvesting
+        authors:
+          - Antonio Hernández Coarasa
+        doi: 10.1109/ICNC.2013.6504149
+        journal: ICNC 2013
+        date: 2013-01
+        url: https://ieeexplore.ieee.org/document/6504149
+
+    skills:
+      - label: Technology & Leadership
+        details: CTO-level leadership, IT Management, Digital Transformation, Enterprise Architecture
+      - label: Engineering
+        details: Embedded Systems, IoT, Electronics, RF, Automotive Systems, Safety-Critical Software
+      - label: Data & Platforms
+        details: ERP (Business Central), Power BI, Cloud Platforms, WebGIS, API Integrations
+      - label: Management
+        details: Cross-functional Leadership, Project & Portfolio Management, M&A Integration
+      - label: Methodologies
+        details: Agile (Scrum), Waterfall, V-Model, V-Spice, ISO 26262
+
+  sort_entries: none
+
+design:
+  theme: classic
+
+locale:
+  language: en
+  present: present
+
+rendercv_settings:
+  date: '2025-10-28'
+  sort_entries: none
