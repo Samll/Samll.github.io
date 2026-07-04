@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <title>Simulador visión bebé 1-12 meses</title>
+  <style>
+    :root {
+      --bg: #050507;
+      --panel: rgba(16, 16, 23, .78);
+      --line: rgba(255,255,255,.13);
+      --txt: #f5f5f7;
+      --muted: #b8bac5;
+      --shadow: 0 18px 60px rgba(0,0,0,.52);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: var(--bg);
+      color: var(--txt);
+    }
+
+    body { position: fixed; inset: 0; }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.12), transparent 34%),
+        linear-gradient(180deg, #080811, #010103);
+    }
+
+    video, canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    video {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #view { background: #000; }
+
+    .topbar {
+      position: fixed;
+      top: max(10px, env(safe-area-inset-top));
+      left: max(10px, env(safe-area-inset-left));
+      right: max(10px, env(safe-area-inset-right));
+      z-index: 20;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .title-pill {
+      pointer-events: auto;
+      flex: 1;
+      max-width: 70vw;
+      min-width: 0;
+      background: rgba(0,0,0,.50);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: 0 10px 32px rgba(0,0,0,.28);
+      border-radius: 18px;
+      padding: 10px 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.12;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #monthTitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 7px;
+      flex-shrink: 0;
+      pointer-events: auto;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--txt);
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    button.primary {
+      background: #fff;
+      color: #08080b;
+      border-color: #fff;
+    }
+
+    button:active { transform: translateY(1px) scale(.99); }
+
+    .bottom-panel {
+      position: fixed;
+      left: max(10px, env(safe-area-inset-left));
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(10px, env(safe-area-inset-bottom));
+      z-index: 25;
+      height: clamp(132px, 22vh, 176px);
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 12px 12px 10px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 8px;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .month-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 31px;
+    }
+
+    .month-big {
+      font-size: clamp(24px, 7vw, 34px);
+      line-height: .9;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -1px;
+    }
+
+    .month-copy { min-width: 0; }
+
+    .month-copy strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.08;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .month-copy span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.18;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .metric {
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .metric b {
+      color: var(--txt);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slider-wrap { display: grid; gap: 4px; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #fff;
+      touch-action: pan-x;
+    }
+
+    .ticks {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      color: rgba(255,255,255,.55);
+      font-size: 9px;
+      line-height: 1;
+      text-align: center;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .details {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      overflow: hidden;
+    }
+
+    .chip {
+      min-width: 0;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 7px 8px;
+      overflow: hidden;
+    }
+
+    .chip span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.05;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip b {
+      display: block;
+      margin-top: 3px;
+      color: var(--txt);
+      font-size: 12px;
+      line-height: 1.05;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .status {
+      position: fixed;
+      left: max(12px, env(safe-area-inset-left));
+      right: max(12px, env(safe-area-inset-right));
+      top: calc(max(10px, env(safe-area-inset-top)) + 58px);
+      z-index: 40;
+      display: none;
+      padding: 12px 14px;
+      border-radius: 17px;
+      background: rgba(0,0,0,.82);
+      border: 1px solid rgba(255,255,255,.16);
+      color: var(--txt);
+      font-size: 12px;
+      line-height: 1.35;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      white-space: pre-wrap;
+    }
+
+    .status.show { display: block; }
+
+    .distance-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 12;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 48%,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0) 30%,
+          rgba(0,0,0,.05) 46%,
+          rgba(0,0,0,.22) 78%,
+          rgba(0,0,0,.42) 100%);
+      mix-blend-mode: multiply;
+    }
+
+    .debug {
+      position: fixed;
+      left: max(10px, env(safe-area-inset-left));
+      bottom: calc(max(10px, env(safe-area-inset-bottom)) + clamp(132px, 22vh, 176px) + 8px);
+      z-index: 35;
+      max-width: min(92vw, 560px);
+      color: rgba(255,255,255,.72);
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 7px 9px;
+      font-size: 10px;
+      line-height: 1.25;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .debug.show { display: block; }
+
+    @media (orientation: landscape) {
+      .bottom-panel {
+        left: auto;
+        width: min(520px, 48vw);
+        height: clamp(122px, 34vh, 168px);
+      }
+
+      .title-pill { max-width: 48vw; }
+
+      .debug {
+        right: calc(max(10px, env(safe-area-inset-right)) + min(520px, 48vw) + 8px);
+        bottom: max(10px, env(safe-area-inset-bottom));
+        max-width: 46vw;
+      }
+    }
+
+    @media (max-height: 620px) {
+      .bottom-panel {
+        height: 126px;
+        border-radius: 20px;
+        padding: 9px 10px 8px;
+        gap: 5px;
+        grid-template-rows: auto auto;
+      }
+
+      .details { display: none; }
+      .month-copy span { display: none; }
+    }
+
+    @media (max-width: 370px) {
+      .details { grid-template-columns: repeat(2, 1fr); }
+      .topbar { gap: 6px; }
+      button { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <video id="video" playsinline autoplay muted></video>
+    <canvas id="view"></canvas>
+    <div class="distance-overlay"></div>
+
+    <div class="topbar">
+      <div class="title-pill">
+        <h1>Simulador de visión infantil</h1>
+        <div id="monthTitle">1 mes · luces, sombras y formas muy gruesas</div>
+      </div>
+      <div class="buttons">
+        <button id="flipBtn">Girar</button>
+        <button id="startBtn" class="primary">Permitir cámara</button>
+      </div>
+    </div>
+
+    <div id="status" class="status"></div>
+    <div id="debug" class="debug"></div>
+
+    <section class="bottom-panel" aria-label="Control de edad visual">
+      <div class="month-header">
+        <div class="month-big"><span id="monthNum">1</span>m</div>
+        <div class="month-copy">
+          <strong id="stageTitle">Luces y contornos</strong>
+          <span id="stageDesc">Muy borroso, bajo contraste y detalle mínimo.</span>
+        </div>
+        <div class="metric">
+          agudeza aprox.
+          <b id="acuityText">muy baja</b>
+        </div>
+      </div>
+
+      <div class="slider-wrap">
+        <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" aria-label="Meses del bebé">
+        <div class="ticks">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+          <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="chip"><span>Borroso</span><b id="blurText">máximo</b></div>
+        <div class="chip"><span>Color</span><b id="colorText">muy bajo</b></div>
+        <div class="chip"><span>Contraste</span><b id="contrastText">bajo</b></div>
+        <div class="chip"><span>Luces</span><b id="lightText">dominantes</b></div>
+      </div>
+    </section>
+  </div>
+
+<script>
+(() => {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d', { alpha: false });
+
+  const statusBox = document.getElementById('status');
+  const debugBox = document.getElementById('debug');
+  const startBtn = document.getElementById('startBtn');
+  const flipBtn = document.getElementById('flipBtn');
+  const slider = document.getElementById('monthSlider');
+
+  const monthNum = document.getElementById('monthNum');
+  const monthTitle = document.getElementById('monthTitle');
+  const stageTitle = document.getElementById('stageTitle');
+  const stageDesc = document.getElementById('stageDesc');
+  const acuityText = document.getElementById('acuityText');
+  const blurText = document.getElementById('blurText');
+  const colorText = document.getElementById('colorText');
+  const contrastText = document.getElementById('contrastText');
+  const lightText = document.getElementById('lightText');
+
+  let stream = null;
+  let facingMode = 'user';
+  let running = false;
+  let current = null;
+  let lastError = '';
+
+  const low = document.createElement('canvas');
+  const lowCtx = low.getContext('2d', { alpha: false, willReadFrequently: true });
+
+  const bloom = document.createElement('canvas');
+  const bloomCtx = bloom.getContext('2d', { alpha: true, willReadFrequently: true });
+
+  const edge = document.createElement('canvas');
+  const edgeCtx = edge.getContext('2d', { alpha: true, willReadFrequently: true });
+
+  const profiles = {
+    1:  { title: "Luces y contornos", desc: "Muy borroso, bajo contraste y detalle mínimo.", acuity: "muy baja", blur: 36, lowScale: .085, contrast: .30, saturation: .05, bloom: .95, peripheral: .50, edgeBoost: .04, warmth: 1.08, faceRange: "20–30 cm" },
+    2:  { title: "Caras cercanas", desc: "Sigue caras próximas, pero sin detalle fino.", acuity: "baja", blur: 28, lowScale: .115, contrast: .40, saturation: .16, bloom: .82, peripheral: .44, edgeBoost: .08, warmth: 1.06, faceRange: "20–40 cm" },
+    3:  { title: "Seguimiento mejor", desc: "Más estabilidad, contornos algo más claros.", acuity: "baja+", blur: 23, lowScale: .145, contrast: .50, saturation: .28, bloom: .70, peripheral: .38, edgeBoost: .12, warmth: 1.04, faceRange: "25–50 cm" },
+    4:  { title: "Más color", desc: "Mejora contraste/color; aún pierde textura.", acuity: "media-baja", blur: 19, lowScale: .175, contrast: .58, saturation: .42, bloom: .58, peripheral: .33, edgeBoost: .16, warmth: 1.02, faceRange: "30–70 cm" },
+    5:  { title: "Detalle grueso", desc: "Objetos y caras ya son más reconocibles.", acuity: "media", blur: 16, lowScale: .210, contrast: .66, saturation: .54, bloom: .49, peripheral: .29, edgeBoost: .18, warmth: 1.01, faceRange: "40–90 cm" },
+    6:  { title: "Percepción robusta", desc: "Mayor nitidez, color y contraste funcional.", acuity: "media", blur: 13, lowScale: .250, contrast: .73, saturation: .64, bloom: .41, peripheral: .25, edgeBoost: .20, warmth: 1.00, faceRange: "0.5–1.2 m" },
+    7:  { title: "Escena más integrada", desc: "Menos bloom; distingue mejor objetos.", acuity: "media+", blur: 11, lowScale: .290, contrast: .79, saturation: .72, bloom: .34, peripheral: .22, edgeBoost: .20, warmth: 1.00, faceRange: "0.6–1.5 m" },
+    8:  { title: "Mejor profundidad", desc: "Más detalle útil y menos dependencia de luces.", acuity: "media+", blur: 9,  lowScale: .335, contrast: .84, saturation: .79, bloom: .28, peripheral: .19, edgeBoost: .19, warmth: 1.00, faceRange: "0.8–2 m" },
+    9:  { title: "Casi cotidiano", desc: "La escena ya conserva bastante estructura.", acuity: "alta-", blur: 7,  lowScale: .390, contrast: .88, saturation: .85, bloom: .23, peripheral: .16, edgeBoost: .17, warmth: 1.00, faceRange: "1–2.5 m" },
+    10: { title: "Más fino", desc: "Texturas grandes visibles; detalle fino limitado.", acuity: "alta-", blur: 6,  lowScale: .455, contrast: .91, saturation: .90, bloom: .19, peripheral: .13, edgeBoost: .14, warmth: 1.00, faceRange: "1–3 m" },
+    11: { title: "Muy funcional", desc: "La imagen se parece mucho más a la adulta.", acuity: "alta", blur: 5,  lowScale: .530, contrast: .94, saturation: .94, bloom: .15, peripheral: .11, edgeBoost: .11, warmth: 1.00, faceRange: "varios m" },
+    12: { title: "Primer año", desc: "Buena visión general; aún madura con los años.", acuity: "alta", blur: 4,  lowScale: .620, contrast: .97, saturation: .98, bloom: .11, peripheral: .09, edgeBoost: .08, warmth: 1.00, faceRange: "varios m" }
+  };
+
+  const labels = {
+    blur(v) {
+      if (v >= 32) return "máximo";
+      if (v >= 23) return "muy alto";
+      if (v >= 15) return "alto";
+      if (v >= 8) return "medio";
+      return "bajo";
+    },
+    color(v) {
+      if (v < .12) return "mínimo";
+      if (v < .35) return "bajo";
+      if (v < .65) return "medio";
+      if (v < .88) return "alto";
+      return "casi adulto";
+    },
+    contrast(v) {
+      if (v < .38) return "muy bajo";
+      if (v < .58) return "bajo";
+      if (v < .78) return "medio";
+      if (v < .92) return "alto";
+      return "casi adulto";
+    },
+    light(v) {
+      if (v > .78) return "dominantes";
+      if (v > .55) return "muy altas";
+      if (v > .32) return "altas";
+      if (v > .18) return "moderadas";
+      return "normales";
+    }
+  };
+
+  function showStatus(msg, timeout = 4500) {
+    statusBox.textContent = msg;
+    statusBox.classList.add('show');
+    if (timeout) setTimeout(() => statusBox.classList.remove('show'), timeout);
+  }
+
+  function setDebug(extra = '') {
+    const secure = window.isSecureContext ? 'sí' : 'no';
+    const protocol = location.protocol || '(sin protocolo)';
+    const host = location.host || '(sin host)';
+    const media = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    debugBox.textContent =
+      `Diagnóstico cámara\n` +
+      `Secure context: ${secure}\n` +
+      `URL: ${protocol}//${host}\n` +
+      `getUserMedia: ${media ? 'disponible' : 'NO disponible'}\n` +
+      `Último error: ${lastError || 'ninguno'}${extra ? "\n" + extra : ""}`;
+    debugBox.classList.add('show');
+  }
+
+  function cameraErrorMessage(err) {
+    const name = err && err.name ? err.name : 'Error desconocido';
+    const msg = err && err.message ? err.message : '';
+
+    if (!window.isSecureContext) {
+      return `La página no está en un contexto seguro.\n\nLa cámara solo funciona en HTTPS o localhost. Si lo estás abriendo como archivo descargado o desde el visor de ChatGPT, el navegador puede bloquearla.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
+      return `Permiso de cámara denegado.\n\nActiva el permiso de cámara para este sitio en el navegador o en ajustes del sistema, y recarga la página.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
+      return `No se detecta cámara disponible.\n\nPrueba otro navegador o revisa que ninguna app esté usando la cámara.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    if (name === 'NotReadableError' || name === 'TrackStartError') {
+      return `La cámara existe pero no se puede leer.\n\nSuele pasar si otra app la está usando, si el navegador no tiene permiso de sistema o si Android/iOS la ha bloqueado temporalmente.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    if (name === 'OverconstrainedError' || name === 'ConstraintNotSatisfiedError') {
+      return `La configuración de cámara solicitada no encaja con el dispositivo.\n\nVoy a probar con una configuración más simple.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    if (name === 'SecurityError') {
+      return `Bloqueo de seguridad del navegador.\n\nUsa HTTPS/localhost y revisa permisos de cámara.\n\nError técnico: ${name} ${msg}`;
+    }
+
+    return `No se pudo abrir la cámara.\n\nError técnico: ${name} ${msg}`;
+  }
+
+  async function checkPermissionState() {
+    try {
+      if (!navigator.permissions || !navigator.permissions.query) return 'unknown';
+      const status = await navigator.permissions.query({ name: 'camera' });
+      return status.state; // granted | denied | prompt
+    } catch {
+      return 'unknown';
+    }
+  }
+
+  function setCanvasSizes() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(2, Math.floor(window.innerWidth * dpr));
+    canvas.height = Math.max(2, Math.floor(window.innerHeight * dpr));
+
+    const p = current || profiles[Number(slider.value)];
+    low.width = Math.max(48, Math.floor(canvas.width * p.lowScale));
+    low.height = Math.max(48, Math.floor(canvas.height * p.lowScale));
+    bloom.width = low.width;
+    bloom.height = low.height;
+    edge.width = low.width;
+    edge.height = low.height;
+  }
+
+  function applyProfile(month) {
+    current = profiles[month];
+    monthNum.textContent = month;
+    monthTitle.textContent = `${month} ${month === 1 ? "mes" : "meses"} · ${current.desc}`;
+    stageTitle.textContent = current.title;
+    stageDesc.textContent = `${current.desc} Distancia útil: ${current.faceRange}.`;
+    acuityText.textContent = current.acuity;
+    blurText.textContent = labels.blur(current.blur);
+    colorText.textContent = labels.color(current.saturation);
+    contrastText.textContent = labels.contrast(current.contrast);
+    lightText.textContent = labels.light(current.bloom);
+    setCanvasSizes();
+  }
+
+  function coverDraw(targetCtx, source, w, h) {
+    const sw = source.videoWidth || source.width;
+    const sh = source.videoHeight || source.height;
+    if (!sw || !sh) return;
+    const scale = Math.max(w / sw, h / sh);
+    const dw = sw * scale;
+    const dh = sh * scale;
+    const dx = (w - dw) / 2;
+    const dy = (h - dh) / 2;
+    targetCtx.drawImage(source, dx, dy, dw, dh);
+  }
+
+  function processLowRes(p) {
+    const img = lowCtx.getImageData(0, 0, low.width, low.height);
+    const data = img.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      let r = data[i];
+      let g = data[i + 1];
+      let b = data[i + 2];
+
+      const y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      let yy = 128 + (y - 128) * p.contrast;
+
+      r = yy + (r - y) * p.saturation;
+      g = yy + (g - y) * p.saturation;
+      b = yy + (b - y) * p.saturation;
+
+      r *= p.warmth;
+      b *= (2 - p.warmth);
+
+      const floor = (1 - p.contrast) * 18;
+      data[i] = Math.max(floor, Math.min(255, r));
+      data[i + 1] = Math.max(floor, Math.min(255, g));
+      data[i + 2] = Math.max(floor, Math.min(255, b));
+    }
+
+    lowCtx.putImageData(img, 0, 0);
+  }
+
+  function makeBloom(p) {
+    bloomCtx.clearRect(0, 0, bloom.width, bloom.height);
+    bloomCtx.drawImage(low, 0, 0);
+
+    const img = bloomCtx.getImageData(0, 0, bloom.width, bloom.height);
+    const data = img.data;
+    const threshold = 112 + (1 - p.bloom) * 72;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i], g = data[i+1], b = data[i+2];
+      const y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      const a = Math.max(0, Math.min(255, (y - threshold) * 2.35 * p.bloom));
+
+      data[i] = Math.min(255, r * (1 + .22 * p.bloom) + 18 * p.bloom);
+      data[i+1] = Math.min(255, g * (1 + .20 * p.bloom) + 18 * p.bloom);
+      data[i+2] = Math.min(255, b * (1 + .18 * p.bloom) + 18 * p.bloom);
+      data[i+3] = a;
+    }
+
+    bloomCtx.putImageData(img, 0, 0);
+  }
+
+  function makeEdges(p) {
+    edgeCtx.clearRect(0, 0, edge.width, edge.height);
+    if (p.edgeBoost <= 0.01) return;
+
+    const img = lowCtx.getImageData(0, 0, low.width, low.height);
+    const src = img.data;
+    const out = edgeCtx.createImageData(edge.width, edge.height);
+    const dst = out.data;
+    const w = edge.width;
+    const h = edge.height;
+
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        const i = (y * w + x) * 4;
+        const ix = (y * w + x + 1) * 4;
+        const iy = ((y + 1) * w + x) * 4;
+
+        const l0 = 0.2126 * src[i] + 0.7152 * src[i+1] + 0.0722 * src[i+2];
+        const lx = 0.2126 * src[ix] + 0.7152 * src[ix+1] + 0.0722 * src[ix+2];
+        const ly = 0.2126 * src[iy] + 0.7152 * src[iy+1] + 0.0722 * src[iy+2];
+
+        const e = Math.min(255, (Math.abs(l0 - lx) + Math.abs(l0 - ly)) * 2.2);
+        dst[i] = 255;
+        dst[i+1] = 255;
+        dst[i+2] = 255;
+        dst[i+3] = e * p.edgeBoost;
+      }
+    }
+
+    edgeCtx.putImageData(out, 0, 0);
+  }
+
+  function drawVignetteAndNoise(p) {
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const grad = ctx.createRadialGradient(
+      w * .5, h * .46, Math.min(w, h) * .12,
+      w * .5, h * .5, Math.max(w, h) * .62
+    );
+    grad.addColorStop(0, 'rgba(255,255,255,0)');
+    grad.addColorStop(.58, `rgba(0,0,0,${p.peripheral * .16})`);
+    grad.addColorStop(1, `rgba(0,0,0,${p.peripheral})`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    const noiseN = Math.floor(260 * (1 - p.contrast));
+    ctx.globalAlpha = Math.max(0, .055 * (1 - p.contrast));
+    ctx.fillStyle = '#fff';
+    for (let i = 0; i < noiseN; i++) {
+      const x = Math.random() * w;
+      const y = Math.random() * h;
+      const s = Math.random() * 2 + .4;
+      ctx.fillRect(x, y, s, s);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function render() {
+    if (!running) return;
+
+    const p = current || profiles[Number(slider.value)];
+
+    if (video.readyState >= 2) {
+      const w = canvas.width;
+      const h = canvas.height;
+
+      lowCtx.save();
+      lowCtx.clearRect(0, 0, low.width, low.height);
+      lowCtx.imageSmoothingEnabled = true;
+      coverDraw(lowCtx, video, low.width, low.height);
+      lowCtx.restore();
+
+      processLowRes(p);
+      makeBloom(p);
+      makeEdges(p);
+
+      ctx.save();
+      ctx.clearRect(0, 0, w, h);
+      ctx.imageSmoothingEnabled = true;
+
+      ctx.filter = `blur(${p.blur}px)`;
+      ctx.drawImage(low, 0, 0, w, h);
+      ctx.filter = 'none';
+
+      ctx.globalAlpha = Math.max(.04, .24 * (1 - p.lowScale));
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(low, 0, 0, w, h);
+      ctx.imageSmoothingEnabled = true;
+      ctx.globalAlpha = 1;
+
+      if (p.edgeBoost > .01) {
+        ctx.globalCompositeOperation = 'screen';
+        ctx.filter = `blur(${Math.max(1, p.blur * .32)}px)`;
+        ctx.globalAlpha = .75;
+        ctx.drawImage(edge, 0, 0, w, h);
+        ctx.globalAlpha = 1;
+        ctx.filter = 'none';
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      ctx.globalCompositeOperation = 'screen';
+      ctx.filter = `blur(${Math.round(p.blur * (1.9 + p.bloom))}px)`;
+      ctx.globalAlpha = .72 * p.bloom;
+      ctx.drawImage(bloom, 0, 0, w, h);
+
+      ctx.filter = `blur(${Math.max(1, Math.round(p.blur * .55))}px)`;
+      ctx.globalAlpha = .34 * p.bloom;
+      ctx.drawImage(bloom, 0, 0, w, h);
+
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.filter = 'none';
+      ctx.globalAlpha = 1;
+
+      drawVignetteAndNoise(p);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  async function getCameraWithFallback() {
+    // 1) Intento ideal con facingMode exacto no obligatorio.
+    try {
+      return await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      });
+    } catch (err1) {
+      // 2) Fallback mínimo. Algunos WebViews fallan con constraints.
+      lastError = `${err1.name || 'Error'} ${err1.message || ''}`;
+      return await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false
+      });
+    }
+  }
+
+  async function startCamera() {
+    try {
+      statusBox.classList.remove('show');
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('getUserMedia no está disponible en este navegador/WebView.');
+      }
+
+      const permissionState = await checkPermissionState();
+
+      if (!window.isSecureContext) {
+        showStatus(
+          `Bloqueo probable: no es contexto seguro.\n\nLa cámara requiere HTTPS o localhost. Abrir el HTML como archivo o desde algunos visores internos no sirve.`,
+          0
+        );
+        setDebug(`Permiso navegador: ${permissionState}`);
+        return;
+      }
+
+      if (permissionState === 'denied') {
+        showStatus(
+          `El permiso de cámara está denegado.\n\nActívalo en ajustes del navegador/sitio y recarga. En Android: candado/ajustes del sitio → Cámara → Permitir.`,
+          0
+        );
+        setDebug(`Permiso navegador: ${permissionState}`);
+        return;
+      }
+
+      if (stream) stream.getTracks().forEach(t => t.stop());
+
+      // Esta llamada es la que dispara el popup de permiso si está en "prompt".
+      stream = await getCameraWithFallback();
+
+      video.srcObject = stream;
+      await video.play();
+
+      running = true;
+      startBtn.textContent = 'Activa';
+      flipBtn.disabled = false;
+
+      const tracks = stream.getVideoTracks();
+      const label = tracks[0]?.label || 'cámara';
+      showStatus(`Cámara activa: ${label}`, 2800);
+      setDebug(`Permiso navegador: ${permissionState}`);
+      requestAnimationFrame(render);
+    } catch (err) {
+      console.error(err);
+      lastError = `${err.name || 'Error'} ${err.message || ''}`;
+      showStatus(cameraErrorMessage(err), 0);
+      setDebug();
+    }
+  }
+
+  async function flipCamera() {
+    facingMode = facingMode === 'user' ? 'environment' : 'user';
+    await startCamera();
+  }
+
+  slider.addEventListener('input', () => applyProfile(Number(slider.value)));
+  startBtn.addEventListener('click', startCamera);
+  flipBtn.addEventListener('click', flipCamera);
+
+  window.addEventListener('resize', () => setCanvasSizes());
+  window.addEventListener('orientationchange', () => setTimeout(setCanvasSizes, 220));
+
+  document.addEventListener('touchmove', (e) => {
+    const isRange = e.target && e.target.tagName === 'INPUT';
+    if (!isRange) e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('gesturestart', e => e.preventDefault());
+
+  applyProfile(1);
+  flipBtn.disabled = false;
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    showStatus('Este navegador/WebView no expone cámara web. Abre el HTML en Chrome o Safari, no dentro de un visor interno.', 0);
+    setDebug();
+  } else if (!window.isSecureContext) {
+    showStatus('La cámara exige HTTPS o localhost. Si abres este fichero descargado directamente, probablemente no funcionará.', 0);
+    setDebug();
+  } else {
+    showStatus('Pulsa “Permitir cámara”. El navegador debería pedir permiso en ese momento.', 4200);
+    setDebug();
+  }
+})();
+</script>
+</body>
+</html>
