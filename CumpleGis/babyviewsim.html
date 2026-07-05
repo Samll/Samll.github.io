@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Simulador Visión Bebé</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        canvas { width: 100%; height: 100%; object-fit: cover; }
+        
+        #ui-layer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(transparent, rgba(0,0,0,0.8) 40%); display: flex; flex-direction: column; gap: 16px; pointer-events: none; }
+        .interactive { pointer-events: auto; }
+        
+        .info-card { color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .info-card h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .info-card p { font-size: 0.9rem; opacity: 0.9; min-height: 40px; line-height: 1.3; }
+        
+        .slider-container { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .labels { display: flex; justify-content: space-between; color: #fff; font-size: 0.8rem; font-weight: 600; opacity: 0.7; }
+        
+        input[type=range] { -webkit-appearance: none; width: 100%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; outline: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 2px solid #000; boxShadow: 0 2px 6px rgba(0,0,0,0.4); cursor: pointer; }
+        
+        #error-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center; width: 80%; font-size: 1rem; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <canvas id="glCanvas"></canvas>
+    </div>
+
+    <div id="ui-layer">
+        <div class="info-card">
+            <h1 id="age-title">Recién Nacido</h1>
+            <p id="age-desc">Casi ciego. Solo detecta luz, sombras y contrastes fuertes a menos de 25 cm. Visión doble por falta de paralelismo ocular.</p>
+        </div>
+        
+        <div class="slider-container interactive">
+            <input type="range" id="age-slider" min="0" max="8" value="0" step="1">
+            <div class="labels">
+                <span>Nacimiento</span>
+                <span>1 año</span>
+                <span>3 años</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="error-msg">Permite el acceso a la cámara trasera para iniciar la simulación.</div>
+
+    <video id="video" autoplay playsinline muted style="display:none;"></video>
+
+    <!-- Vertex Shader -->
+    <script id="vs" type="x-shader/x-vertex">
+        attribute vec2 position;
+        varying vec2 vTexCoord;
+        void main() {
+            vTexCoord = vec2(position.x * 0.5 + 0.5, 0.5 - position.y * 0.5);
+            gl_Position = vec4(position, 0.0, 1.0);
+        }
+    </script>
+
+    <!-- Fragment Shader (Procesamiento de imagen dinámico) -->
+    <script id="fs" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec2 vTexCoord;
+        uniform sampler2D uSampler;
+        
+        uniform float uBlur;
+        uniform float uSat;
+        uniform float uDoubleVision; // Controla la separación de la diplopía
+        uniform float uContrastBoost; // Incrementa contraste en bordes oscuros en etapas tempranas
+
+        void main() {
+            vec2 uv = vTexCoord;
+            vec4 color = vec4(0.0);
+            
+            // Simulación de Diplopía (Visión doble binocular) + Desenfoque Gaussiano básico simulado por muestreo
+            float steps = 8.0;
+            float totalWeight = 0.0;
+            
+            // Desplazamiento horizontal para la visión doble
+            float doubleOffset = uDoubleVision * 0.03;
+            
+            for (float i = -3.0; i <= 3.0; i++) {
+                for (float j = -3.0; j <= 3.0; j++) {
+                    vec2 offset = vec2(i, j) * (uBlur * 0.015) / steps;
+                    
+                    // Ojo izquierdo
+                    vec4 sampleL = texture2D(uSampler, uv + offset - vec2(doubleOffset, 0.0));
+                    // Ojo derecho
+                    vec4 sampleR = texture2D(uSampler, uv + offset + vec2(doubleOffset, 0.0));
+                    
+                    // Mezclamos ambos ojos si hay visión doble, si no converge en una sola imagen
+                    vec4 combinedSample = mix(sampleL, sampleR, 0.5);
+                    
+                    float weight = (4.0 - abs(i)) * (4.0 - abs(j));
+                    color += combinedSample * weight;
+                    totalWeight += weight;
+                }
+            }
+            color /= totalWeight;
+
+            // Procesamiento de color: Desaturación progresiva
+            float luma = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+            vec3 finalColor = mix(vec3(luma), color.rgb, uSat);
+            
+            // En los primeros meses, el espectro de color está tan limitado que los rojos/blancos/negros dominan.
+            // Forzamos un sutil boost de contraste adaptativo si la saturación es muy baja (etapa inicial)
+            if (uSat < 0.2) {
+                finalColor = mix(finalColor, smoothstep(0.1, 0.9, finalColor), uContrastBoost);
+            }
+
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    </script>
+
+    <script>
+        // Datos científicos de la evolución visual indexados por el slider
+        const milestones = [
+            { title: "Recién Nacido", blur: 1.0, sat: 0.0, doubleVision: 1.0, boost: 0.5, desc: "Agudeza visual de 20/400. Ve en blanco, negro y gris. Su rango focal óptimo es de 20-25 cm. Los ojos no coordinan (visión doble)." },
+            { title: "1 Mes", blur: 0.85, sat: 0.1, doubleVision: 0.7, boost: 0.3, desc: "Empieza a seguir objetos grandes muy lentamente. El color rojo puede empezar a llamar su atención si está muy saturado." },
+            { title: "2 Meses", blur: 0.6, sat: 0.3, doubleVision: 0.4, boost: 0.0, desc: "Los ojos empiezan a coordinar mejor. Distingue el rojo y el verde. El fondo sigue siendo una masa borrosa." },
+            { title: "3 a 4 Meses", blur: 0.4, sat: 0.6, doubleVision: 0.1, boost: 0.0, desc: "Alineación ocular casi completa. Aparecen el azul y el amarillo. Comienza a desarrollar la percepción de profundidad." },
+            { title: "6 Meses", blur: 0.2, sat: 0.85, doubleVision: 0.0, boost: 0.0, desc: "Agudeza visual cercana a 20/40. Distingue matices sutiles de color y enfoca a diferentes distancias de forma rápida." },
+            { title: "9 Meses", blur: 0.1, sat: 0.95, doubleVision: 0.0, boost: 0.0, desc: "El color de los ojos suele ser el definitivo. Puede juzgar distancias con precisión para gatear y agarrar objetos pequeños." },
+            { title: "1 Año (12 Meses)", blur: 0.05, sat: 1.0, doubleVision: 0.0, boost: 0.0, desc: "La agudeza y la percepción del relieve tridimensional son equivalentes a las de un adulto en distancias cortas." },
+            { title: "2 Años", blur: 0.02, sat: 1.0, doubleVision: 0.0, boost: 0.0, desc: "La convergencia visual, el enfoque fino y el seguimiento de objetos rápidos están perfectamente maduros y consolidados." },
+            { title: "3 Años", blur: 0.0, sat: 1.0, doubleVision: 0.0, boost: 0.0, desc: "Visión 100% adulta (20/20). El sistema visual está completamente desarrollado en términos de nitidez, contraste y color." }
+        ];
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('glCanvas');
+        const slider = document.getElementById('age-slider');
+        const ageTitle = document.getElementById('age-title');
+        const ageDesc = document.getElementById('age-desc');
+        const errorMsg = document.getElementById('error-msg');
+
+        let gl, program, texture;
+        let uniforms = {};
+
+        // Inicializar Cámara Trasera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+                    audio: false
+                });
+                video.srcObject = stream;
+                video.addEventListener('loadedmetadata', initWebGL);
+            } catch (err) {
+                console.error("Error accediendo a la cámara: ", err);
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Inicializar contexto WebGL para procesamiento en tiempo real
+        function initWebGL() {
+            gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) { alert('WebGL no soportado en este dispositivo.'); return; }
+
+            // Ajustar resolución interna del canvas al tamaño de pantalla nativo
+            canvas.width = window.innerWidth * window.devicePixelRatio;
+            canvas.height = window.innerHeight * window.devicePixelRatio;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            // Compilar Shaders
+            const vsSource = document.getElementById('vs').text;
+            const fsSource = document.getElementById('fs').text;
+            
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vs, vsSource);
+            gl.compileShader(vs);
+            
+            const fs = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fs, fsSource);
+            gl.compileShader(fs);
+
+            program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            // Geometría del Canvas (Dos triángulos que cubren la pantalla completa)
+            const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+            const positionLoc = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLoc);
+            gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+            // Crear Textura de Entrada desde el Stream de la cámara
+            texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+            // Cachear locaciones de Uniforms
+            uniforms.uBlur = gl.getUniformLocation(program, 'uBlur');
+            uniforms.uSat = gl.getUniformLocation(program, 'uSat');
+            uniforms.uDoubleVision = gl.getUniformLocation(program, 'uDoubleVision');
+            uniforms.uContrastBoost = gl.getUniformLocation(program, 'uContrastBoost');
+
+            // Escuchar cambios del Slider para actualizar la UI textualmente
+            slider.addEventListener('input', updateUI);
+            updateUI();
+
+            // Iniciar bucle de renderizado
+            requestAnimationFrame(render);
+        }
+
+        function updateUI() {
+            const data = milestones[slider.value];
+            ageTitle.innerText = data.title;
+            ageDesc.innerText = data.desc;
+        }
+
+        function render() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                // Subir el frame actual del video a la GPU
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+
+                // Obtener parámetros del hito seleccionado en el slider
+                const m = milestones[slider.value];
+
+                // Pasar parámetros al fragment shader
+                gl.uniform1f(uniforms.uBlur, m.blur);
+                gl.uniform1f(uniforms.uSat, m.sat);
+                gl.uniform1f(uniforms.uDoubleVision, m.doubleVision);
+                gl.uniform1f(uniforms.uContrastBoost, m.boost);
+
+                // Dibujar
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // Manejar redimensionamiento de pantalla
+        window.addEventListener('resize', () => {
+            if (gl) {
+                canvas.width = window.innerWidth * window.devicePixelRatio;
+                canvas.height = window.innerHeight * window.devicePixelRatio;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+        });
+
+        window.onload = initCamera;
+    </script>
+</body>
+</html>
